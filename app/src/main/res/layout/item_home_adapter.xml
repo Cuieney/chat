@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:layout_marginBottom="20dp"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/img"
+        android:background="#333333"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/apple_adver" />
+
+    <ImageView
+        android:layout_marginTop="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="10dp"
+        android:id="@+id/head"
+        app:layout_constraintTop_toBottomOf="@id/img"
+        android:src="@mipmap/ic_launcher"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+
+    <TextView
+        android:layout_marginLeft="10dp"
+        app:layout_constraintTop_toTopOf="@id/head"
+        app:layout_constraintLeft_toRightOf="@id/head"
+        android:text="定格动画MV：彩色铅笔狂想曲"
+        android:textColor="@color/font_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <TextView
+        android:textSize="12sp"
+        android:layout_marginLeft="10dp"
+        app:layout_constraintBottom_toBottomOf="@id/head"
+        app:layout_constraintLeft_toRightOf="@id/head"
+        android:layout_marginBottom="10dp"
+        android:text="Time for u · 10万次播放"
+        android:textColor="#737373"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+</android.support.constraint.ConstraintLayout>
