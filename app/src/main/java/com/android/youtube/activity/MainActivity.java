@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.activity;
 
 import android.os.Build;
 import android.os.Bundle;
@@ -13,13 +13,24 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.android.youtube.R;
+import com.android.youtube.model.TabEntity;
+import com.android.youtube.customview.TextureVideoView;
+import com.android.youtube.customview.YouTubeVideoView;
+import com.android.youtube.adapter.RecommendAdapter;
+import com.android.youtube.fragment.ChatFragment;
+import com.android.youtube.fragment.VideoFragment;
 import com.flyco.tablayout.CommonTabLayout;
-import com.flyco.tablayout.SegmentTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import pb.LogicExtGrpc;
+import pb.LogicExtOuterClass;
 
 
 public class MainActivity extends AppCompatActivity implements YouTubeVideoView.Callback {
@@ -71,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
     private void initData() {
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
-            fragmentList.add(VideoFragment.newInstance(mTitles[i]));
+            if (i == 0) {
+                fragmentList.add(ChatFragment.newInstance());
+            } else {
+                fragmentList.add(VideoFragment.newInstance(mTitles[i]));
+
+            }
         }
         tabbar.setTabData(mTabEntities);
 
@@ -97,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
     }
 
     private Fragment currentFragment;
+
     private FragmentTransaction switchFragment(Fragment targetFragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         if (!targetFragment.isAdded()) {
@@ -113,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 
 
     public void playVideo(String url) {
-        Log.i("oye", "playVideo: "+url);
+        Log.i("oye", "playVideo: " + url);
         mYouTubeVideoView.show();
         videoPlayer.stop();
         videoPlayer.setScaleType(TextureVideoView.ScaleType.CENTER_CROP);
@@ -131,7 +148,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 
     @Override
     public void onVideoViewHide() {
-        Toast.makeTexgit initt(this, "video destroy", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "video destroy", Toast.LENGTH_SHORT).show();
         videoPlayer.stop();
 
     }

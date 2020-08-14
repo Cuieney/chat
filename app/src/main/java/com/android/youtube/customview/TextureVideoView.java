@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.customview;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

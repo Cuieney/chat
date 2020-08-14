@@ -1,31 +1,65 @@
 apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
-
+apply plugin: 'com.google.protobuf'
 apply plugin: 'kotlin-android-extensions'
-
 android {
-    compileSdkVersion 26
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.android.youtube"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
+    lintOptions {
+        disable 'GoogleAppIndexingWarning', 'HardcodedText', 'InvalidPackage'
+        textReport true
+        textOutput "stdout"
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-}
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
+}
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        grpc {
+            artifact = 'io.grpc:protoc-gen-grpc-java:1.0.0-pre2'
+        }
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            javalite {}
+        }
+        ofNonTest()*.plugins {
+            grpc {
+                // Options added to --grpc_out
+                option 'lite'
+            }
+        }
+    }
+}
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -36,11 +70,26 @@ dependencies {
     //
     //    compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     //    implementation 'com.shuyu:GSYVideoPlayer:6.0.3'
-    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
+//    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
     //根据你的需求ijk模式的so
-    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    compile 'com.android.support:support-v4:26.1.0'
-    compile 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+//    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
+    implementation 'com.android.support:recyclerview-v7:27.1.0'
+    implementation 'com.android.support:support-v4:27.1.0'
+    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
+
+//    implementation 'io.grpc:grpc-okhttp:1.10.+'
+//    implementation 'io.grpc:grpc-stub:1.10.+'
+
+
+    //  GRPC dependencies
+    implementation 'javax.annotation:javax.annotation-api:1.2'
+    implementation 'io.grpc:grpc-protobuf-lite:1.12.+'
+    implementation 'io.grpc:grpc-okhttp:1.12.+'
+    implementation 'io.grpc:grpc-stub:1.12.+'
+
+
+//    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.5.1'
+//    implementation 'io.grpc:grpc-protobuf-lite:1.31.1'
+//    compile 'javax.annotation:javax.annotation-api:1.2'
 }

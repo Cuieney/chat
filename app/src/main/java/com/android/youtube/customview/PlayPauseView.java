@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.customview;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.graphics.Rect;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+
+import com.android.youtube.R;
 
 /**
  * Desc : PlayPauseView

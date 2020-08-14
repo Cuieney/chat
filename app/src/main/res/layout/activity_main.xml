@@ -51,7 +51,7 @@
         android:visibility="visible">
 
 
-        <com.android.youtube.YouTubeVideoView
+        <com.android.youtube.customview.YouTubeVideoView
             android:id="@+id/youtube_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -67,15 +67,17 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+
                     android:layout_height="wrap_content">
 
-
                     <include
-
                         layout="@layout/item_min_controller" />
+
+
+
                 </LinearLayout>
 
-                <com.android.youtube.TextureVideoView
+                <com.android.youtube.customview.TextureVideoView
                     android:id="@+id/video_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,7 +104,7 @@
                     android:background="#ffffff" />
             </RelativeLayout>
 
-        </com.android.youtube.YouTubeVideoView>
+        </com.android.youtube.customview.YouTubeVideoView>
     </LinearLayout>
 
 

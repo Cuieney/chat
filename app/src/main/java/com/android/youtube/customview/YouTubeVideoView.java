@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.customview;
 
 /**
  * Created by laoyongzhi on 2017/4/15.
@@ -10,23 +10,17 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.view.animation.LinearInterpolator;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 public class YouTubeVideoView extends LinearLayout  {
 
@@ -35,7 +29,7 @@ public class YouTubeVideoView extends LinearLayout  {
 
 
 
-    interface Callback {
+    public interface Callback {
         void onVideoViewHide();
 
         void onVideoClick();

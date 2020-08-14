@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.model;
 
 import com.flyco.tablayout.listener.CustomTabEntity;
 

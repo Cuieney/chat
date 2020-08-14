@@ -1,41 +1,44 @@
-package com.android.youtube;
+package com.android.youtube.customview;
 
 import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /**
  * Created by cuieney on 2019/2/23.
  */
 
-public class LayoutParamsWrapper {
-    LinearLayout.LayoutParams layoutParams;
+public class RelativeLayoutParamsWrapper {
+    RelativeLayout.LayoutParams layoutParams;
     private View view;
 
-    public LayoutParamsWrapper(View view) {
+    public RelativeLayoutParamsWrapper(View view) {
         if (view == null) {
             Log.i("oye", "LayoutParamsWrapper:view is null ");
         }
         this.view = view;
 
         if (view instanceof ViewGroup) {
-            layoutParams = (LinearLayout.LayoutParams) ((ViewGroup) view).getLayoutParams();
+            layoutParams = (RelativeLayout.LayoutParams) ((ViewGroup) view).getLayoutParams();
             Log.i("oye", "LayoutParamsWrapper:view  is ViewGroup ");
 
         }else{
-            layoutParams = (LinearLayout.LayoutParams) view.getLayoutParams();
+            layoutParams = (RelativeLayout.LayoutParams) view.getLayoutParams();
         }
 
         if (layoutParams == null) {
             Log.i("oye", "LayoutParamsWrapper:view getLayoutParams is null ");
-            layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
             view.setLayoutParams(layoutParams);
         }
 
     }
 
+    public View getView() {
+        return view;
+    }
 
     public int getMarginLeft() {
         return layoutParams.leftMargin;
@@ -81,9 +84,6 @@ public class LayoutParamsWrapper {
         view.setLayoutParams(layoutParams);
     }
 
-    public View getView() {
-        return view;
-    }
 
     public void setWidth(int value){
         layoutParams.width = value;

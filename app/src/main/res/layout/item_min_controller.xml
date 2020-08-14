@@ -8,11 +8,6 @@
     android:layout_height="match_parent">
 
 
-
-
-
-
-
     <LinearLayout
         android:id="@+id/des_container"
         android:orientation="vertical"
@@ -44,7 +39,7 @@
 
     </LinearLayout>
 
-    <com.android.youtube.PlayPauseView
+    <com.android.youtube.customview.PlayPauseView
         tl:layout_constraintBottom_toBottomOf="parent"
         tl:layout_constraintTop_toTopOf="parent"
         tl:layout_constraintLeft_toRightOf="@id/des_container"

@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
