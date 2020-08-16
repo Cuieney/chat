@@ -1,6 +1,7 @@
 package com.android.youtube.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.youtube.R;
+import com.android.youtube.activity.ChatActivity;
 import com.android.youtube.activity.MainActivity;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
 import com.android.youtube.adapter.ChatAdapter;
@@ -60,7 +62,9 @@ public class ChatFragment   extends Fragment {
         adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
-                mActivity.playVideo(position+" ");
+                Intent intent = new Intent(mActivity, ChatActivity.class);
+                intent.putExtra("userName","cuieney");
+                startActivity(intent);
             }
         });
         view.setAdapter(adapter);

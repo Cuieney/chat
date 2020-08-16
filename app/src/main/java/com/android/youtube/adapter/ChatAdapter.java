@@ -21,7 +21,14 @@ public class ChatAdapter extends BaseRecycerViewAdapter<String,ChatAdapter.Holde
 
     @Override
     public void getBindViewHolder(ChatAdapter.Holder holder, int position) {
-
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickListener != null) {
+                    mClickListener.onItemClick(position,v,holder);
+                }
+            }
+        });
     }
 
     public class Holder extends RecyclerView.ViewHolder {
