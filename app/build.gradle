@@ -72,9 +72,11 @@ dependencies {
     //    implementation 'com.shuyu:GSYVideoPlayer:6.0.3'
 //    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
     //根据你的需求ijk模式的so
+
 //    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
+
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
 

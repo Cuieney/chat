@@ -11,14 +11,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.youtube.ContactAdapter;
 import com.android.youtube.R;
 import com.android.youtube.activity.MainActivity;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
-import com.android.youtube.adapter.ChatAdapter;
 
 import java.util.ArrayList;
 
-public class ChatFragment   extends Fragment {
+public class ContactFragment extends Fragment {
     private static String ARG_PARAM = "param_key";
     private String mParam;
     private MainActivity mActivity;
@@ -31,7 +31,7 @@ public class ChatFragment   extends Fragment {
         mParam = getArguments().getString(ARG_PARAM);  //获取参数
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.chat_fragment, container, false);
+        View root = inflater.inflate(R.layout.contact_fragment, container, false);
         view = root.findViewById(R.id.list);
         return root;
     }
@@ -42,8 +42,8 @@ public class ChatFragment   extends Fragment {
         initData();
     }
 
-    public static ChatFragment newInstance(String str) {
-        ChatFragment frag = new ChatFragment();
+    public static ContactFragment newInstance(String str) {
+        ContactFragment frag = new ContactFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM, str);
         frag.setArguments(bundle);   //设置参数
@@ -53,10 +53,10 @@ public class ChatFragment   extends Fragment {
     private void initData(){
         view.setLayoutManager(new LinearLayoutManager(mActivity));
         ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 10; i++) {
             list.add(i+"");
         }
-        ChatAdapter adapter = new ChatAdapter(mActivity, list);
+        ContactAdapter adapter = new ContactAdapter(mActivity, list);
         adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {

@@ -1,5 +1,7 @@
 package com.android.youtube.activity;
 
+import android.app.Activity;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -11,9 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.android.youtube.R;
+import com.android.youtube.fragment.ContactFragment;
+import com.android.youtube.fragment.MeFragment;
 import com.android.youtube.model.TabEntity;
 import com.android.youtube.customview.TextureVideoView;
 import com.android.youtube.customview.YouTubeVideoView;
@@ -26,11 +34,6 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import pb.LogicExtGrpc;
-import pb.LogicExtOuterClass;
 
 
 public class MainActivity extends AppCompatActivity implements YouTubeVideoView.Callback {
@@ -51,19 +54,51 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
     private ArrayList<CustomTabEntity> mTabEntities = new ArrayList<>();
 
     private List<Fragment> fragmentList = new ArrayList<>();
+    private FrameLayout content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStatusBarTransparent();
         setContentView(R.layout.activity_main);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
+        getRootView(this).setPadding(0,getStatusBarHeight(),0,0);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+//        }
 
         initView();
         initData();
 
 
+    }
+
+    public void setStatusBarTransparent(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // 4.4
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) { // 5.0
+            Window window = getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS); // 確認取消半透明設置。
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN // 全螢幕顯示，status bar 不隱藏，activity 上方 layout 會被 status bar 覆蓋。
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE); // 配合其他 flag 使用，防止 system bar 改變後 layout 的變動。
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); // 跟系統表示要渲染 system bar 背景。
+            window.setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+    private static View getRootView(Activity context)
+    {
+        return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+    }
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources()
+                .getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
 
@@ -74,20 +109,30 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
         videoPlayer = (TextureVideoView) findViewById(R.id.video_view);
 
         mYouTubeVideoView = (YouTubeVideoView) findViewById(R.id.youtube_view);
+        content = (FrameLayout) findViewById(R.id.content);
 
         mYouTubeVideoView.setCallback(this);
     }
 
 
     private void initData() {
+        fragmentList.add(ChatFragment.newInstance(""));
+        fragmentList.add(ContactFragment.newInstance(""));
+        fragmentList.add(VideoFragment.newInstance(""));
+        fragmentList.add(MeFragment.newInstance(""));
+
+        currentFragment = fragmentList.get(0);
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.container, currentFragment).commit();
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
             if (i == 0) {
-                fragmentList.add(ChatFragment.newInstance());
+                fragmentList.add(ChatFragment.newInstance("1"));
             } else {
                 fragmentList.add(VideoFragment.newInstance(mTitles[i]));
 
             }
+
         }
         tabbar.setTabData(mTabEntities);
 
@@ -96,13 +141,18 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
         for (int i = 0; i < 8; i++) {
             list.add(i + "");
         }
+
         recyclerView.setAdapter(new RecommendAdapter(this, list));
-        currentFragment = fragmentList.get(0);
-        switchFragment(currentFragment).commit();
         tabbar.setOnTabSelectListener(new OnTabSelectListener() {
             @Override
             public void onTabSelect(int position) {
+                if (position == 3) {
+                    content.setBackgroundColor(Color.parseColor("#ffffff"));
+                }else{
+                    content.setBackgroundColor(Color.parseColor("#EDEDED"));
+                }
                 switchFragment(fragmentList.get(position)).commit();
+
             }
 
             @Override

@@ -5,24 +5,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.youtube.R;
 import com.android.youtube.activity.MainActivity;
-import com.android.youtube.adapter.BaseRecycerViewAdapter;
-import com.android.youtube.adapter.ChatAdapter;
 
-import java.util.ArrayList;
-
-public class ChatFragment   extends Fragment {
+public class MeFragment  extends Fragment {
     private static String ARG_PARAM = "param_key";
     private String mParam;
     private MainActivity mActivity;
-    private RecyclerView view;
+
 
     @Override
     public void onAttach(Context context) {
@@ -31,8 +25,8 @@ public class ChatFragment   extends Fragment {
         mParam = getArguments().getString(ARG_PARAM);  //获取参数
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.chat_fragment, container, false);
-        view = root.findViewById(R.id.list);
+        View root = inflater.inflate(R.layout.me_fragment, container, false);
+
         return root;
     }
 
@@ -42,8 +36,8 @@ public class ChatFragment   extends Fragment {
         initData();
     }
 
-    public static ChatFragment newInstance(String str) {
-        ChatFragment frag = new ChatFragment();
+    public static MeFragment newInstance(String str) {
+        MeFragment frag = new MeFragment();
         Bundle bundle = new Bundle();
         bundle.putString(ARG_PARAM, str);
         frag.setArguments(bundle);   //设置参数
@@ -51,19 +45,7 @@ public class ChatFragment   extends Fragment {
     }
 
     private void initData(){
-        view.setLayoutManager(new LinearLayoutManager(mActivity));
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            list.add(i+"");
-        }
-        ChatAdapter adapter = new ChatAdapter(mActivity, list);
-        adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
-                mActivity.playVideo(position+" ");
-            }
-        });
-        view.setAdapter(adapter);
+
     }
 
 }

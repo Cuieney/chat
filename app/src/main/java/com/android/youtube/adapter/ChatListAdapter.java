@@ -40,15 +40,15 @@ public class ChatListAdapter extends BaseRecycerViewAdapter<String, ChatListAdap
     public class Holder extends RecyclerView.ViewHolder {
 
 
-        private final ImageView head;
-        private final TextView friendName,firendLastMsg,friendTime;
+        private  ImageView head;
+        private  TextView friendName,firendLastMsg,friendTime;
 
         public Holder(View itemView) {
             super(itemView);
-            head = ((ImageView) itemView.findViewById(R.id.friend_img));
-            friendName = ((TextView) itemView.findViewById(R.id.friend_name));
-            firendLastMsg = ((TextView) itemView.findViewById(R.id.friend_last_msg));
-            friendTime = ((TextView) itemView.findViewById(R.id.time));
+//            head = ((ImageView) itemView.findViewById(R.id.friend_img));
+//            friendName = ((TextView) itemView.findViewById(R.id.friend_name));
+//            firendLastMsg = ((TextView) itemView.findViewById(R.id.friend_last_msg));
+//            friendTime = ((TextView) itemView.findViewById(R.id.time));
         }
     }
 }
