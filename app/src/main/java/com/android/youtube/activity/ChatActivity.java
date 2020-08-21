@@ -14,6 +14,9 @@ import android.widget.TextView;
 
 import com.android.youtube.R;
 import com.android.youtube.adapter.MsgListAdapter;
+import com.android.youtube.netty.Const;
+import com.android.youtube.netty.NettyClient;
+import com.android.youtube.utils.MessageObserver;
 
 import java.util.ArrayList;
 
@@ -48,6 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         MsgListAdapter adapter = new MsgListAdapter(this, new ArrayList<String>());
         msgList.setAdapter(adapter);
         userName.setText(userNameTxt);
+        NettyClient client = NettyClient.getInstance();
 
 
         sendMsg.setOnClickListener(new View.OnClickListener() {
@@ -56,9 +60,10 @@ public class ChatActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-
                         try {
-                            ManagedChannel channel = ManagedChannelBuilder.forAddress("112.126.102.84", 50001).usePlaintext().build();
+                            client.connect();
+
+                            ManagedChannel channel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
                             LogicExtGrpc.LogicExtBlockingStub blockingStub = LogicExtGrpc.newBlockingStub(channel);
                             LogicExtOuterClass.RegisterDeviceReq registerDeviceReq = LogicExtOuterClass
                                     .RegisterDeviceReq

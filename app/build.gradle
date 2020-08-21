@@ -3,6 +3,8 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.google.protobuf'
 apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'org.greenrobot.greendao'
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -57,8 +59,8 @@ protobuf {
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support:appcompat-v7:28.0.0-alpha3'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
@@ -70,28 +72,26 @@ dependencies {
     //
     //    compile 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     //    implementation 'com.shuyu:GSYVideoPlayer:6.0.3'
-//    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
+    //    implementation 'com.shuyu:gsyVideoPlayer-java:6.0.3'
     //根据你的需求ijk模式的so
-
-//    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
+    //    implementation 'com.shuyu:gsyVideoPlayer-armv7a:6.0.3'
     implementation 'com.android.support:recyclerview-v7:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
-
     implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
     implementation 'com.squareup.picasso:picasso:2.71828'
-
-//    implementation 'io.grpc:grpc-okhttp:1.10.+'
-//    implementation 'io.grpc:grpc-stub:1.10.+'
-
-
+    //    implementation 'io.grpc:grpc-okhttp:1.10.+'
+    //    implementation 'io.grpc:grpc-stub:1.10.+'
     //  GRPC dependencies
     implementation 'javax.annotation:javax.annotation-api:1.2'
     implementation 'io.grpc:grpc-protobuf-lite:1.12.+'
     implementation 'io.grpc:grpc-okhttp:1.12.+'
     implementation 'io.grpc:grpc-stub:1.12.+'
-
-
-//    implementation group: 'com.google.protobuf', name: 'protobuf-java', version: '3.5.1'
-//    implementation 'io.grpc:grpc-protobuf-lite:1.31.1'
-//    compile 'javax.annotation:javax.annotation-api:1.2'
+    implementation 'org.greenrobot:greendao:3.3.0'
+//    implementation project(path: ':im_lib')
+//    implementation rootProject.ext.dependencies.protobuf
+//    compileOnly rootProject.ext.dependencies.fastjson
+    compileOnly files('libs/netty-tcp-4.1.33-1.0.jar')
+//    implementation 'com.google.protobuf:protobuf-java:3.5.0'
+    //    implementation 'io.grpc:grpc-protobuf-lite:1.31.1'
+    //    compile 'javax.annotation:javax.annotation-api:1.2'
 }

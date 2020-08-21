@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.youtube.R;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
 
 import java.util.List;

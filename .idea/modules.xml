@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-youtubeEx.iml" filepath="$PROJECT_DIR$/project-youtubeEx.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/youtubeEx.iml" filepath="$PROJECT_DIR$/.idea/youtubeEx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/youtubeEx-app.iml" filepath="$PROJECT_DIR$/app/youtubeEx-app.iml" />
     </modules>
   </component>
 </project>

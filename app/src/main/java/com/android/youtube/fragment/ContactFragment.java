@@ -11,7 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.youtube.ContactAdapter;
+import com.android.youtube.adapter.ContactAdapter;
 import com.android.youtube.R;
 import com.android.youtube.activity.MainActivity;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;

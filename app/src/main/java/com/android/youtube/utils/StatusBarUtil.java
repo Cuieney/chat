@@ -1,4 +1,4 @@
-package com.android.youtube;
+package com.android.youtube.utils;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+
+import com.android.youtube.R;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
