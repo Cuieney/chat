@@ -70,13 +70,12 @@ public class NettyClient {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             //解码器，通过Google Protocol Buffers序列化框架动态的切割接收到的ByteBuf
-                            pipeline.addLast(new ProtobufVarint32FrameDecoder());
+                            pipeline.addLast(new SelfDecoder());
                             //服务器端接收的是客户端RequestUser对象，所以这边将接收对象进行解码生产实列
                             //Google Protocol Buffers编码器
                             pipeline.addLast(new ProtobufDecoder(ConnExt.Message.getDefaultInstance()));
-                            pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
+                            pipeline.addLast(new SelfEncoder());
                             //Google Protocol Buffers编码器
-                            pipeline.addLast(new ProtobufEncoder());
                             pipeline.addLast(new ProtoClientHandler());
                         }
                     });

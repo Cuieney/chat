@@ -1,7 +1,6 @@
-package com.xiaomeng.wxbridge.common.netty;
+package com.android.youtube.netty;
 
 import com.google.protobuf.MessageLite;
-import com.xiaomeng.wxbridge.common.utils.LogUtil;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

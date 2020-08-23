@@ -1,14 +1,15 @@
-package com.xiaomeng.wxbridge.common.netty;
+package com.android.youtube.netty;
+
+import android.util.Log;
 
 import java.util.List;
 
 import com.google.protobuf.MessageLite;
-import com.xiaomeng.wxbridge.common.utils.LogUtil;
 
-import Jubo.JuLiao.IM.Wx.Proto.*;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import pb.ConnExt;
 
 public class SelfDecoder extends ByteToMessageDecoder {
     @Override
@@ -65,7 +66,7 @@ public class SelfDecoder extends ByteToMessageDecoder {
             try {
                 result = decodeBody(array, offset, readableLen);
             } catch (Exception e) {
-                LogUtil.d(e.getMessage());
+                Log.d("Decoder",e.getMessage());
             }
 
             out.add(result);
@@ -74,7 +75,7 @@ public class SelfDecoder extends ByteToMessageDecoder {
     }
 
     public MessageLite decodeBody(byte[] array, int offset, int length) throws Exception {
-        TransportMessageOuterClass.TransportMessage message = TransportMessageOuterClass.TransportMessage.getDefaultInstance().
+        ConnExt.Message message = ConnExt.Message.getDefaultInstance().
                 getParserForType().parseFrom(array, offset, length);
         return message;
 
