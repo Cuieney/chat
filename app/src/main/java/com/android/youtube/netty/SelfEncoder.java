@@ -1,5 +1,7 @@
 package com.android.youtube.netty;
 
+import android.util.Log;
+
 import com.google.protobuf.MessageLite;
 
 import io.netty.buffer.ByteBuf;
@@ -7,9 +9,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
 
 public class SelfEncoder extends MessageToByteEncoder<MessageLite> {
+    private String TAG = "SelfEncoder";
 
     @Override
     protected void encode(ChannelHandlerContext ctx, MessageLite msg, ByteBuf out) throws Exception {
+        Log.i(TAG, "encode: ");
         byte[] body = msg.toByteArray();
         byte[] header = encodeHeader(msg, (short) body.length);
 

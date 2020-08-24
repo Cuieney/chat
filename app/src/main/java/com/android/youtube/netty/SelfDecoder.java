@@ -12,9 +12,12 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 import pb.ConnExt;
 
 public class SelfDecoder extends ByteToMessageDecoder {
+
+    private String TAG = "SelfDecoder";
+
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
-
+        Log.i(TAG, "decode: ");
         while (in.readableBytes() > 4) { // 如果可读长度小于包头长度，退出。
             in.markReaderIndex();
 
@@ -75,8 +78,10 @@ public class SelfDecoder extends ByteToMessageDecoder {
     }
 
     public MessageLite decodeBody(byte[] array, int offset, int length) throws Exception {
-        ConnExt.Message message = ConnExt.Message.getDefaultInstance().
+        ConnExt.Output message = ConnExt.Output.getDefaultInstance().
                 getParserForType().parseFrom(array, offset, length);
+        Log.i(TAG, "decodeBody: ");
+
         return message;
 
     }

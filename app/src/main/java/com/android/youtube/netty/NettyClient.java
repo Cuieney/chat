@@ -14,6 +14,7 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
 import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
@@ -70,11 +71,16 @@ public class NettyClient {
                         protected void initChannel(SocketChannel socketChannel) throws Exception {
                             ChannelPipeline pipeline = socketChannel.pipeline();
                             //解码器，通过Google Protocol Buffers序列化框架动态的切割接收到的ByteBuf
-                            pipeline.addLast(new SelfDecoder());
+                            pipeline.addLast(new LengthFieldBasedFrameDecoder(1024*1024,2,2,0,0));
+//                            pipeline.addLast(new ProtobufVarint32FrameDecoder());
+
                             //服务器端接收的是客户端RequestUser对象，所以这边将接收对象进行解码生产实列
                             //Google Protocol Buffers编码器
-                            pipeline.addLast(new ProtobufDecoder(ConnExt.Message.getDefaultInstance()));
+                            pipeline.addLast(new ProtobufDecoder(ConnExt.Output.getDefaultInstance()));
                             pipeline.addLast(new SelfEncoder());
+//                            pipeline.addLast(new ProtobufVarint32LengthFieldPrepender());
+                            //Google Protocol Buffers编码器
+//                            pipeline.addLast(new ProtobufEncoder());
                             //Google Protocol Buffers编码器
                             pipeline.addLast(new ProtoClientHandler());
                         }

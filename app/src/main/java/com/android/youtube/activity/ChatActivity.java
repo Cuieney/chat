@@ -12,16 +12,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.adapter.MsgListAdapter;
 import com.android.youtube.netty.Const;
 import com.android.youtube.netty.NettyClient;
+import com.android.youtube.utils.JwtCallCredential;
 import com.android.youtube.utils.MessageObserver;
 
 import java.util.ArrayList;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import pb.ConnExt;
 import pb.LogicExtGrpc;
 import pb.LogicExtOuterClass;
 import pb.UserExtGrpc;
@@ -54,7 +57,12 @@ public class ChatActivity extends AppCompatActivity {
         msgList.setAdapter(adapter);
         userName.setText(userNameTxt);
         NettyClient client = NettyClient.getInstance();
-
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,8 +71,31 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
+//                            ReceiverType receiver_type = 1; // 接收者类型，1：user;2:group
+//                            int64 receiver_id = 2; // 用户id或者群组id
+//                            repeated int64 to_user_ids = 3; // 需要@的用户id列表
+//                            MessageType message_type = 4; // 消息类型
+//                            bytes message_content = 5; // 消息内容
+//                            int64 send_time = 6; // 消息发送时间戳，精确到毫秒
+//                            bool is_persist = 7; // 是否将消息持久化到数据库
+                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText("xxxx").build();
+
+
+//                            QLEMOZTXVXHKNDYCOVEAJDIXXZAHNDQSGFKVTHGQ  4
 
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
+
+                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
+                                    .setSendTime(System.currentTimeMillis())
+                                    .setReceiverId(App.signInResp.getUserId())
+                                    .setIsPersist(true)
+                                    .setMessageContent(xxxx.getTextBytes())
+                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
+                                    .build();
+
+                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
+                            Log.i("ChatActivity", "run: "+resp.getSeq());
+                            loginChannel.shutdownNow();
 
 
 
