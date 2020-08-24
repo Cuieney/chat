@@ -80,7 +80,7 @@ public class NettyClient {
                         }
                     });
             // 连接到服务端
-            ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress(Const.MSG_SOCKET_HOST, Const.MSG_SOCKET_PORT));
+            ChannelFuture channelFuture = bootstrap.connect(new InetSocketAddress(Const.MSG_SOCKET_HOST, 8080));
             //获取连接通道
             channel = channelFuture.sync().channel();
         } catch (Exception e) {

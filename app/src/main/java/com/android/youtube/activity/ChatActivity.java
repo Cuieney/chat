@@ -24,6 +24,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import pb.LogicExtGrpc;
 import pb.LogicExtOuterClass;
+import pb.UserExtGrpc;
+import pb.UserExtOuterClass;
 
 public class ChatActivity extends AppCompatActivity {
 
@@ -61,20 +63,11 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            client.connect();
 
-                            ManagedChannel channel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
-                            LogicExtGrpc.LogicExtBlockingStub blockingStub = LogicExtGrpc.newBlockingStub(channel);
-                            LogicExtOuterClass.RegisterDeviceReq registerDeviceReq = LogicExtOuterClass
-                                    .RegisterDeviceReq
-                                    .newBuilder()
-                                    .setType(2)
-                                    .setBrand("xiaomi")
-                                    .setModel("10")
-                                    .setSystemVersion("android10")
-                                    .setSdkVersion("28").build();
-                            LogicExtOuterClass.RegisterDeviceResp deviceResp = blockingStub.registerDevice(registerDeviceReq);
-                            Log.i("oye", "run: "+deviceResp.getDeviceId());
+                            ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
+
+
+
                         } catch (Exception e) {
                             Log.i("oye", "run: "+e);
 

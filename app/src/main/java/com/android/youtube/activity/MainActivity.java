@@ -19,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.fragment.ContactFragment;
 import com.android.youtube.fragment.MeFragment;
@@ -28,12 +29,18 @@ import com.android.youtube.customview.YouTubeVideoView;
 import com.android.youtube.adapter.RecommendAdapter;
 import com.android.youtube.fragment.ChatFragment;
 import com.android.youtube.fragment.VideoFragment;
+import com.android.youtube.netty.Const;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import pb.UserExtGrpc;
+import pb.UserExtOuterClass;
 
 
 public class MainActivity extends AppCompatActivity implements YouTubeVideoView.Callback {
@@ -68,6 +75,20 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 
         initView();
         initData();
+        initApi();
+
+    }
+
+    private void initApi() {
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();
+        UserExtGrpc.UserExtBlockingStub blockingStub = UserExtGrpc.newBlockingStub(channel);
+        UserExtOuterClass.SignInReq signInReq = UserExtOuterClass.SignInReq.newBuilder().setDeviceId(9).setPhoneNumber("18365268222").build();
+        UserExtOuterClass.SignInResp resp = blockingStub.signIn(signInReq);
+
+        App.signInResp = resp;
+        Log.i("oye", "run: "+resp.getToken()+"  "+ resp.getUserId());
+
 
 
     }

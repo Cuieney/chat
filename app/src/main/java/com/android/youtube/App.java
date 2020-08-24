@@ -4,8 +4,11 @@ import android.app.Application;
 
 import com.android.youtube.utils.DBUtils;
 
+import pb.UserExtOuterClass;
+
 public class App extends Application {
     public static App app;
+    public static UserExtOuterClass.SignInResp signInResp;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -15,5 +18,6 @@ public class App extends Application {
 
     private void init(){
         DBUtils.getInstance().init(this);
+
     }
 }

@@ -2,6 +2,8 @@ package com.android.youtube.netty;
 
 import android.util.Log;
 
+import com.android.youtube.App;
+
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pb.ConnExt;
@@ -24,6 +26,12 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Mess
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         Log.d(TAG, "与服务端连接成功：" + ctx.toString());
+
+        ConnExt.SignInInput.Builder builder = ConnExt.SignInInput.newBuilder();
+
+        ConnExt.SignInInput signInInput = builder.setDeviceId(9).setToken(App.signInResp.getToken()).setUserId(App.signInResp.getUserId()).build();
+
+        ctx.writeAndFlush(signInInput);
     }
 
     /**
