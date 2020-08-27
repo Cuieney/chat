@@ -22,13 +22,13 @@ public class SelfDecoder extends ByteToMessageDecoder {
             in.markReaderIndex();
 
             // 获取包头中的body长度
-            byte b3 = in.readByte();
-            byte b2 = in.readByte();
+//            byte b3 = in.readByte();
+//            byte b2 = in.readByte();
             byte b1 = in.readByte();
             byte b0 = in.readByte();
 
-            int length = (b0 & 0xff) | ((b1 << 8) & 0xff00) | ((b2 << 16) & 0xff0000) | ((b3 << 24) & 0xff000000);
-
+            int length = (b0 & 0xff) | ((b1 << 8) & 0xff00);
+            Log.i(TAG, "decode: "+length);
 
             // 如果可读长度小于body长度，恢复读指针，退出。
             if (in.readableBytes() < length) {
@@ -45,7 +45,6 @@ public class SelfDecoder extends ByteToMessageDecoder {
             int offset;
 
             int readableLen = bodyByteBuf.readableBytes();
-
 
 
             if (bodyByteBuf.hasArray()) {

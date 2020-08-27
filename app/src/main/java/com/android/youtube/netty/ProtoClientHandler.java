@@ -18,11 +18,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         Log.d(TAG, "收到服务器消息 "+msg+" ");
     }
 
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        super.channelRead(ctx, msg);
-        Log.d(TAG, "收到服务器消息 "+msg+" ");
-    }
+
 
     /**
      * 与服务端连接成功的回调
