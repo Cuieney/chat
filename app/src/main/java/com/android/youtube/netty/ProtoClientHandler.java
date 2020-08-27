@@ -16,6 +16,10 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ConnExt.Output msg) throws Exception {
         Log.d(TAG, "收到服务器消息 "+msg+" ");
+        if(msg.getType() == ConnExt.PackageType.PT_MESSAGE){
+            ConnExt.Message message = ConnExt.Message.parseFrom(msg.getData());
+            Log.i(TAG, "channelRead0: "+message);
+        }
     }
 
 
