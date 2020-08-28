@@ -88,7 +88,7 @@ public class ChatActivity extends AppCompatActivity {
                                     .setMessageContent(xxxx.getTextBytes())
                                     .setReceiverType(ConnExt.ReceiverType.RT_USER)
                                     .build();
-
+                            Log.i("ChatActivity", "run: "+(userID == 0 ? Integer.parseInt(firendID) : userID));
                             LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
                             Log.i("ChatActivity", "run: " + resp.getSeq());
                             loginChannel.shutdownNow();
