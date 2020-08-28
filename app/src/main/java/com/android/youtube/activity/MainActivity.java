@@ -32,6 +32,7 @@ import com.android.youtube.adapter.RecommendAdapter;
 import com.android.youtube.fragment.ChatFragment;
 import com.android.youtube.fragment.VideoFragment;
 import com.android.youtube.netty.Const;
+import com.android.youtube.netty.NettyClient;
 import com.android.youtube.utils.DBUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
@@ -89,6 +90,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
             startActivity(new Intent(MainActivity.this,SplashActivity.class));
             finish();
         }
+        NettyClient client = NettyClient.getInstance();
 
 
 //        ManagedChannel channel1 = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();

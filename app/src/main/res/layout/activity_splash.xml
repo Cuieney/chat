@@ -11,6 +11,7 @@
     <EditText
         android:id="@+id/user_phone"
         android:layout_width="0dp"
+        android:hint="手机号"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/user_name"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,6 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
+        android:hint="用户名"
         android:id="@+id/user_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

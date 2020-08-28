@@ -28,6 +28,8 @@ public class ChatFragment   extends Fragment {
     private String mParam;
     private MainActivity mActivity;
     private RecyclerView view;
+    private View openChatPage;
+    private List<Message> list;
 
     @Override
     public void onAttach(Context context) {
@@ -38,6 +40,7 @@ public class ChatFragment   extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.chat_fragment, container, false);
         view = root.findViewById(R.id.list);
+        openChatPage = root.findViewById(R.id.search);
         return root;
     }
 
@@ -55,20 +58,34 @@ public class ChatFragment   extends Fragment {
         return frag;
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        list = DBUtils.getInstance().getMessageList();
+    }
+
     private void initData(){
         view.setLayoutManager(new LinearLayoutManager(mActivity));
-        List<Message> list = DBUtils.getInstance().getMessageList();
+        list = DBUtils.getInstance().getMessageList();
 
         ChatAdapter adapter = new ChatAdapter(mActivity, list);
         adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
                 Intent intent = new Intent(mActivity, ChatActivity.class);
-                intent.putExtra("userName",list.get(position).getSender_id());
+                intent.putExtra("userName", list.get(position).getSender_id());
                 startActivity(intent);
             }
         });
         view.setAdapter(adapter);
+
+        openChatPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(mActivity,ChatActivity.class));
+            }
+        });
     }
 
 }

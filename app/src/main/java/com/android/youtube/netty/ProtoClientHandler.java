@@ -1,7 +1,9 @@
 package com.android.youtube.netty;
 
 import android.database.sqlite.SQLiteDatabase;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.youtube.App;
 import com.android.youtube.entity.DaoMaster;
@@ -25,7 +27,6 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         if(msg.getType() == ConnExt.PackageType.PT_MESSAGE){
             ConnExt.Message message = ConnExt.Message.parseFrom(msg.getData());
             Log.i(TAG, "channelRead0: "+message);
-
             Message entity = new Message();
             ConnExt.MessageItem item = message.getMessage();
             entity.setMessage_content(ConnExt.Text.parseFrom(item.getMessageContent()).getText());
@@ -40,8 +41,14 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
             entity.setSender_type(item.getSenderTypeValue());
             entity.setSender_id((int) item.getSenderId());
             entity.setReceiver_id((int) item.getRequestId());
-
             DBUtils.getInstance().insertMessage(entity);
+            Looper.prepare();
+            try {
+                Toast.makeText(App.app,"收到消息",Toast.LENGTH_SHORT).show();
+            }catch (Exception e) {
+                Log.e("error",e.toString());
+            }
+            Looper.loop();
         }
     }
 
@@ -61,7 +68,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         ConnExt.SignInInput.Builder builder = ConnExt.SignInInput.newBuilder();
 
         ConnExt.SignInInput signInInput = builder
-                .setDeviceId(9)
+                .setDeviceId(App.user.getDeviceId())
                 .setToken(App.user.getToken())
                 .setUserId(App.user.getUserId())
                 .build();

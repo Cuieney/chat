@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.youtube.App;
 import com.android.youtube.R;
@@ -37,6 +39,7 @@ public class ChatActivity extends AppCompatActivity {
     private Button sendMsg;
     private TextView userName;
     private EditText inputMsg;
+    private EditText firendsId;
     private int userID;
 
     @Override
@@ -51,12 +54,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        userID = getIntent().getIntExtra("userName",0);
+        userID = getIntent().getIntExtra("userName", 0);
         msgList.setLayoutManager(new LinearLayoutManager(this));
         MsgListAdapter adapter = new MsgListAdapter(this, new ArrayList<String>());
         msgList.setAdapter(adapter);
-        userName.setText(userID);
-        NettyClient client = NettyClient.getInstance();
+        userName.setText(userID+"");
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,6 +69,12 @@ public class ChatActivity extends AppCompatActivity {
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String firendID = firendsId.getText().toString();
+                if (TextUtils.isEmpty(firendID) && userID == 0) {
+
+                    Toast.makeText(ChatActivity.this, "请输入朋友ID", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -75,19 +83,19 @@ public class ChatActivity extends AppCompatActivity {
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
                             LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
                                     .setSendTime(System.currentTimeMillis())
-                                    .setReceiverId(userID)
+                                    .setReceiverId(userID == 0 ? Integer.parseInt(firendID) : userID)
                                     .setIsPersist(true)
                                     .setMessageContent(xxxx.getTextBytes())
                                     .setReceiverType(ConnExt.ReceiverType.RT_USER)
                                     .build();
 
                             LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
-                            Log.i("ChatActivity", "run: "+resp.getSeq());
+                            Log.i("ChatActivity", "run: " + resp.getSeq());
                             loginChannel.shutdownNow();
 
 
                         } catch (Exception e) {
-                            Log.i("oye", "run: "+e);
+                            Log.i("oye", "run: " + e);
 
                         }
                     }
@@ -103,5 +111,6 @@ public class ChatActivity extends AppCompatActivity {
         sendMsg = ((Button) findViewById(R.id.send_msg));
         userName = ((TextView) findViewById(R.id.user_name));
         inputMsg = ((EditText) findViewById(R.id.msg_content));
+        firendsId = ((EditText) findViewById(R.id.friend_ids));
     }
 }

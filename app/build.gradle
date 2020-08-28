@@ -83,9 +83,9 @@ dependencies {
     //    implementation 'io.grpc:grpc-stub:1.10.+'
     //  GRPC dependencies
     implementation 'javax.annotation:javax.annotation-api:1.2'
-    implementation 'io.grpc:grpc-protobuf-lite:1.12.+'
-    implementation 'io.grpc:grpc-okhttp:1.12.+'
-    implementation 'io.grpc:grpc-stub:1.12.+'
+    implementation 'io.grpc:grpc-protobuf-lite:1.12.1'
+    implementation 'io.grpc:grpc-okhttp:1.12.1'
+    implementation 'io.grpc:grpc-stub:1.12.1'
     implementation 'org.greenrobot:greendao:3.3.0'
 //    implementation project(path: ':im_lib')
 //    implementation rootProject.ext.dependencies.protobuf

@@ -1,6 +1,7 @@
 package com.android.youtube.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.youtube.entity.DaoMaster;
 import com.android.youtube.entity.DaoSession;
@@ -11,12 +12,14 @@ import com.android.youtube.entity.MessageDao;
 import com.android.youtube.entity.User;
 import com.android.youtube.entity.UserDao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DBUtils {
     private static DBUtils instance;
     private DaoMaster.DevOpenHelper helper;
     private DaoSession daoSession;
+    private String TAG = "DBUtils";
 
     public synchronized static DBUtils getInstance() {
         synchronized (DBUtils.class) {
@@ -51,7 +54,15 @@ public class DBUtils {
 
 
     public List<Message> getMessageList() {
-        return daoSession.loadAll(Message.class);
+        List<Message> list = new ArrayList<Message>();
+        try {
+            List<Message> messages = daoSession.loadAll(Message.class);
+            list.addAll(messages);
+        }catch (Exception e){
+            Log.i(TAG, "getMessageList: "+e.getMessage());
+        }
+
+        return list;
     }
 
 
