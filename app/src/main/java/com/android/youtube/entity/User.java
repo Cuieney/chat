@@ -16,70 +16,58 @@ public class User {
     private String userName;
     private String userPhone;
     private String token;
-    private String userId;
-    private String deviceId;
+    private int userId;
+    private int deviceId;
+@Generated(hash = 1974669336)
+public User(Long id, String userName, String userPhone, String token,
+        int userId, int deviceId) {
+    this.id = id;
+    this.userName = userName;
+    this.userPhone = userPhone;
+    this.token = token;
+    this.userId = userId;
+    this.deviceId = deviceId;
+}
+@Generated(hash = 586692638)
+public User() {
+}
+public Long getId() {
+    return this.id;
+}
+public void setId(Long id) {
+    this.id = id;
+}
+public String getUserName() {
+    return this.userName;
+}
+public void setUserName(String userName) {
+    this.userName = userName;
+}
+public String getUserPhone() {
+    return this.userPhone;
+}
+public void setUserPhone(String userPhone) {
+    this.userPhone = userPhone;
+}
+public String getToken() {
+    return this.token;
+}
+public void setToken(String token) {
+    this.token = token;
+}
+public int getUserId() {
+    return this.userId;
+}
+public void setUserId(int userId) {
+    this.userId = userId;
+}
+public int getDeviceId() {
+    return this.deviceId;
+}
+public void setDeviceId(int deviceId) {
+    this.deviceId = deviceId;
+}
 
-    @Generated(hash = 959197978)
-    public User(Long id, String userName, String userPhone, String token,
-            String userId, String deviceId) {
-        this.id = id;
-        this.userName = userName;
-        this.userPhone = userPhone;
-        this.token = token;
-        this.userId = userId;
-        this.deviceId = deviceId;
-    }
-
-    @Generated(hash = 586692638)
-    public User() {
-    }
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getUserName() {
-        return this.userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPhone() {
-        return this.userPhone;
-    }
-
-    public void setUserPhone(String userPhone) {
-        this.userPhone = userPhone;
-    }
-
-    public String getToken() {
-        return this.token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public String getUserId() {
-        return this.userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getDeviceId() {
-        return this.deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
+    
 
 }

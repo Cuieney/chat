@@ -6,6 +6,7 @@ import android.util.Log;
 import com.android.youtube.App;
 import com.android.youtube.entity.DaoMaster;
 import com.android.youtube.entity.DaoSession;
+import com.android.youtube.entity.Message;
 import com.android.youtube.entity.MessageDao;
 import com.android.youtube.utils.DBUtils;
 
@@ -27,7 +28,9 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
             SQLiteDatabase writableDatabase = DBUtils.getInstance().getDbHelper().getWritableDatabase();
             DaoSession daoSession = new DaoMaster(writableDatabase).newSession();
             MessageDao messageDao = daoSession.getMessageDao();
-            messageDao.insert()
+
+
+            messageDao.insert(new Message());
         }
     }
 
@@ -48,8 +51,8 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
 
         ConnExt.SignInInput signInInput = builder
                 .setDeviceId(9)
-                .setToken(App.signInResp.getToken())
-                .setUserId(App.signInResp.getUserId())
+                .setToken(App.user.getToken())
+                .setUserId(App.user.getUserId())
                 .build();
 
         ConnExt.Input build = ConnExt.Input.newBuilder().setType(ConnExt.PackageType.PT_SIGN_IN)
@@ -58,7 +61,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
 //        ChannelPromise promise = ctx.newPromise();
         ctx.writeAndFlush(build);
 
-        Log.d(TAG, "与服务端连接成功："+App.signInResp.getToken()+"  "+App.signInResp.getUserId()+"  ");
+        Log.d(TAG, "与服务端连接成功："+App.user.getToken()+"  "+App.user.getUserId()+"  ");
 
 
 //        ConnExt.SyncInput build = ConnExt.SyncInput.newBuilder().setSeq(1).build();

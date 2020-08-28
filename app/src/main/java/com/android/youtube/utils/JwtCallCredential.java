@@ -18,9 +18,9 @@ public class JwtCallCredential implements CallCredentials {
         try {
             Metadata headers = new Metadata();
             Metadata.Key<String> jwtKey = Metadata.Key.of("token", Metadata.ASCII_STRING_MARSHALLER);
-            headers.put(jwtKey, App.signInResp1.getToken());
-            headers.put(Metadata.Key.of("user_id", Metadata.ASCII_STRING_MARSHALLER), App.signInResp1.getUserId()+"");
-            headers.put(Metadata.Key.of("device_id", Metadata.ASCII_STRING_MARSHALLER), 8+"");
+            headers.put(jwtKey, App.user.getToken());
+            headers.put(Metadata.Key.of("user_id", Metadata.ASCII_STRING_MARSHALLER), App.user.getUserId()+"");
+            headers.put(Metadata.Key.of("device_id", Metadata.ASCII_STRING_MARSHALLER), App.user.getDeviceId()+"");
             headers.put(Metadata.Key.of("request_id", Metadata.ASCII_STRING_MARSHALLER),System.currentTimeMillis()+"");
             applier.apply(headers);
         } catch (Throwable e) {

@@ -85,16 +85,16 @@ public class ChatActivity extends AppCompatActivity {
 
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
 
-                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
-                                    .setSendTime(System.currentTimeMillis())
-                                    .setReceiverId(App.signInResp.getUserId())
-                                    .setIsPersist(true)
-                                    .setMessageContent(xxxx.getTextBytes())
-                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
-                                    .build();
+//                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
+//                                    .setSendTime(System.currentTimeMillis())
+//                                    .setReceiverId(App.signInResp.getUserId())
+//                                    .setIsPersist(true)
+//                                    .setMessageContent(xxxx.getTextBytes())
+//                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
+//                                    .build();
 
-                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
-                            Log.i("ChatActivity", "run: "+resp.getSeq());
+//                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
+//                            Log.i("ChatActivity", "run: "+resp.getSeq());
                             loginChannel.shutdownNow();
 
 

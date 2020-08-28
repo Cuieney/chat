@@ -1,7 +1,6 @@
 package com.android.youtube.utils;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 
 import com.android.youtube.entity.DaoMaster;
 import com.android.youtube.entity.DaoSession;
@@ -11,6 +10,8 @@ import com.android.youtube.entity.Message;
 import com.android.youtube.entity.MessageDao;
 import com.android.youtube.entity.User;
 import com.android.youtube.entity.UserDao;
+
+import java.util.List;
 
 public class DBUtils {
     private static DBUtils instance;
@@ -45,6 +46,10 @@ public class DBUtils {
     public void insertUser(User user){
         UserDao userDao = daoSession.getUserDao();
         userDao.insert(user);
+    }
+
+    public List<User> getUser(){
+        return  daoSession.loadAll(User.class);
     }
 
     public void insertMessage(Message message){

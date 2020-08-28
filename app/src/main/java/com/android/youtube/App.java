@@ -2,14 +2,16 @@ package com.android.youtube;
 
 import android.app.Application;
 
+import com.android.youtube.entity.User;
 import com.android.youtube.utils.DBUtils;
 
-import pb.UserExtOuterClass;
+import java.util.List;
+
 
 public class App extends Application {
     public static App app;
-    public static UserExtOuterClass.SignInResp signInResp;
-    public static UserExtOuterClass.SignInResp signInResp1;
+    public static User user;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -17,8 +19,12 @@ public class App extends Application {
         init();
     }
 
-    private void init(){
+    private void init() {
         DBUtils.getInstance().init(this);
-
+        List<User> userList = DBUtils.getInstance().getUser();
+        if (userList.size() > 0) {
+            user = userList.get(0);
+        }
     }
+
 }

@@ -1,6 +1,7 @@
 package com.android.youtube.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.android.youtube.App;
 import com.android.youtube.R;
+import com.android.youtube.entity.User;
 import com.android.youtube.fragment.ContactFragment;
 import com.android.youtube.fragment.MeFragment;
 import com.android.youtube.model.TabEntity;
@@ -30,6 +32,7 @@ import com.android.youtube.adapter.RecommendAdapter;
 import com.android.youtube.fragment.ChatFragment;
 import com.android.youtube.fragment.VideoFragment;
 import com.android.youtube.netty.Const;
+import com.android.youtube.utils.DBUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
         super.onCreate(savedInstanceState);
         setStatusBarTransparent();
         setContentView(R.layout.activity_main);
-        getRootView(this).setPadding(0,getStatusBarHeight(),0,0);
+        getRootView(this).setPadding(0, getStatusBarHeight(), 0, 0);
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 //            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 //        }
@@ -81,14 +84,11 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 
     private void initApi() {
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();
-        UserExtGrpc.UserExtBlockingStub blockingStub = UserExtGrpc.newBlockingStub(channel);
-        UserExtOuterClass.SignInReq signInReq = UserExtOuterClass.SignInReq.newBuilder().setDeviceId(9).setPhoneNumber("18365268222").build();
-        UserExtOuterClass.SignInResp resp = blockingStub.signIn(signInReq);
+        if (App.user == null) {
 
-        App.signInResp = resp;
-        Log.i("oye", "run: "+resp.getToken()+"  "+ resp.getUserId());
-        channel.shutdownNow();
+            startActivity(new Intent(MainActivity.this,SplashActivity.class));
+            finish();
+        }
 
 
 //        ManagedChannel channel1 = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();
@@ -101,11 +101,10 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 //        channel1.shutdownNow();
 
 
-
     }
 
-    public void setStatusBarTransparent(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){ // 4.4
+    public void setStatusBarTransparent() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) { // 4.4
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
 
@@ -118,10 +117,11 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
             window.setStatusBarColor(Color.TRANSPARENT);
         }
     }
-    private static View getRootView(Activity context)
-    {
-        return ((ViewGroup)context.findViewById(android.R.id.content)).getChildAt(0);
+
+    private static View getRootView(Activity context) {
+        return ((ViewGroup) context.findViewById(android.R.id.content)).getChildAt(0);
     }
+
     private int getStatusBarHeight() {
         int result = 0;
         int resourceId = getResources()
@@ -180,7 +180,7 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
             public void onTabSelect(int position) {
                 if (position == 3) {
                     content.setBackgroundColor(Color.parseColor("#ffffff"));
-                }else{
+                } else {
                     content.setBackgroundColor(Color.parseColor("#EDEDED"));
                 }
                 switchFragment(fragmentList.get(position)).commit();
