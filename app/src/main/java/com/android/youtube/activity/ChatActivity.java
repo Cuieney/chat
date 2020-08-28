@@ -37,6 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private Button sendMsg;
     private TextView userName;
     private EditText inputMsg;
+    private int userID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,12 +51,11 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        String userNameTxt = getIntent().getStringExtra("userName");
-        String userId = getIntent().getStringExtra("userId");
+        userID = getIntent().getIntExtra("userName",0);
         msgList.setLayoutManager(new LinearLayoutManager(this));
         MsgListAdapter adapter = new MsgListAdapter(this, new ArrayList<String>());
         msgList.setAdapter(adapter);
-        userName.setText(userNameTxt);
+        userName.setText(userID);
         NettyClient client = NettyClient.getInstance();
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,32 +71,19 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-//                            ReceiverType receiver_type = 1; // 接收者类型，1：user;2:group
-//                            int64 receiver_id = 2; // 用户id或者群组id
-//                            repeated int64 to_user_ids = 3; // 需要@的用户id列表
-//                            MessageType message_type = 4; // 消息类型
-//                            bytes message_content = 5; // 消息内容
-//                            int64 send_time = 6; // 消息发送时间戳，精确到毫秒
-//                            bool is_persist = 7; // 是否将消息持久化到数据库
-                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText("xxxx").build();
-
-
-//                            QLEMOZTXVXHKNDYCOVEAJDIXXZAHNDQSGFKVTHGQ  4
-
+                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText(inputMsg.getText().toString()).build();
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
+                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
+                                    .setSendTime(System.currentTimeMillis())
+                                    .setReceiverId(userID)
+                                    .setIsPersist(true)
+                                    .setMessageContent(xxxx.getTextBytes())
+                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
+                                    .build();
 
-//                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass.SendMessageReq.newBuilder().setMessageType(ConnExt.MessageType.MT_TEXT)
-//                                    .setSendTime(System.currentTimeMillis())
-//                                    .setReceiverId(App.signInResp.getUserId())
-//                                    .setIsPersist(true)
-//                                    .setMessageContent(xxxx.getTextBytes())
-//                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
-//                                    .build();
-
-//                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
-//                            Log.i("ChatActivity", "run: "+resp.getSeq());
+                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
+                            Log.i("ChatActivity", "run: "+resp.getSeq());
                             loginChannel.shutdownNow();
-
 
 
                         } catch (Exception e) {

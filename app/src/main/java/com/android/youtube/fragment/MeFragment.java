@@ -8,14 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.activity.MainActivity;
+import com.android.youtube.entity.User;
 
 public class MeFragment  extends Fragment {
     private static String ARG_PARAM = "param_key";
     private String mParam;
     private MainActivity mActivity;
+    private TextView wechatId;
+    private TextView name;
 
 
     @Override
@@ -26,6 +31,8 @@ public class MeFragment  extends Fragment {
     }
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.me_fragment, container, false);
+        wechatId = ((TextView) root.findViewById(R.id.info));
+        name = ((TextView) root.findViewById(R.id.name));
 
         return root;
     }
@@ -45,7 +52,9 @@ public class MeFragment  extends Fragment {
     }
 
     private void initData(){
-
+        User user = App.user;
+        wechatId.setText("微信号："+user.getUserId()+" 设备号："+user.getDeviceId());
+        name.setText(user.getUserName());
     }
 
 }

@@ -64,19 +64,20 @@ public class Message {
     private Long id;
     private String message_content;
     private int message_type;
-    private String receiver_id;
+    private int receiver_id;
     private int receiver_type;
-    private String request_id;
-    private String send_time;
-    private String sender_device_id;
+    private long request_id;
+    private long send_time;
+    private int sender_id;
+    private int sender_device_id;
     private int sender_type;
-    private String seq;
-    private int status;
-@Generated(hash = 461733162)
+    private long seq;
+    private long status;
+@Generated(hash = 1171085737)
 public Message(Long id, String message_content, int message_type,
-        String receiver_id, int receiver_type, String request_id,
-        String send_time, String sender_device_id, int sender_type, String seq,
-        int status) {
+        int receiver_id, int receiver_type, long request_id, long send_time,
+        int sender_id, int sender_device_id, int sender_type, long seq,
+        long status) {
     this.id = id;
     this.message_content = message_content;
     this.message_type = message_type;
@@ -84,6 +85,7 @@ public Message(Long id, String message_content, int message_type,
     this.receiver_type = receiver_type;
     this.request_id = request_id;
     this.send_time = send_time;
+    this.sender_id = sender_id;
     this.sender_device_id = sender_device_id;
     this.sender_type = sender_type;
     this.seq = seq;
@@ -110,10 +112,10 @@ public int getMessage_type() {
 public void setMessage_type(int message_type) {
     this.message_type = message_type;
 }
-public String getReceiver_id() {
+public int getReceiver_id() {
     return this.receiver_id;
 }
-public void setReceiver_id(String receiver_id) {
+public void setReceiver_id(int receiver_id) {
     this.receiver_id = receiver_id;
 }
 public int getReceiver_type() {
@@ -122,22 +124,28 @@ public int getReceiver_type() {
 public void setReceiver_type(int receiver_type) {
     this.receiver_type = receiver_type;
 }
-public String getRequest_id() {
+public long getRequest_id() {
     return this.request_id;
 }
-public void setRequest_id(String request_id) {
+public void setRequest_id(long request_id) {
     this.request_id = request_id;
 }
-public String getSend_time() {
+public long getSend_time() {
     return this.send_time;
 }
-public void setSend_time(String send_time) {
+public void setSend_time(long send_time) {
     this.send_time = send_time;
 }
-public String getSender_device_id() {
+public int getSender_id() {
+    return this.sender_id;
+}
+public void setSender_id(int sender_id) {
+    this.sender_id = sender_id;
+}
+public int getSender_device_id() {
     return this.sender_device_id;
 }
-public void setSender_device_id(String sender_device_id) {
+public void setSender_device_id(int sender_device_id) {
     this.sender_device_id = sender_device_id;
 }
 public int getSender_type() {
@@ -146,16 +154,18 @@ public int getSender_type() {
 public void setSender_type(int sender_type) {
     this.sender_type = sender_type;
 }
-public String getSeq() {
+public long getSeq() {
     return this.seq;
 }
-public void setSeq(String seq) {
+public void setSeq(long seq) {
     this.seq = seq;
 }
-public int getStatus() {
+public long getStatus() {
     return this.status;
 }
-public void setStatus(int status) {
+public void setStatus(long status) {
     this.status = status;
 }
+
+
 }

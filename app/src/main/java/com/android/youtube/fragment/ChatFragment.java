@@ -17,8 +17,11 @@ import com.android.youtube.activity.ChatActivity;
 import com.android.youtube.activity.MainActivity;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
 import com.android.youtube.adapter.ChatAdapter;
+import com.android.youtube.entity.Message;
+import com.android.youtube.utils.DBUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ChatFragment   extends Fragment {
     private static String ARG_PARAM = "param_key";
@@ -54,16 +57,14 @@ public class ChatFragment   extends Fragment {
 
     private void initData(){
         view.setLayoutManager(new LinearLayoutManager(mActivity));
-        ArrayList<String> list = new ArrayList<>();
-        for (int i = 0; i < 8; i++) {
-            list.add(i+"");
-        }
+        List<Message> list = DBUtils.getInstance().getMessageList();
+
         ChatAdapter adapter = new ChatAdapter(mActivity, list);
         adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
                 Intent intent = new Intent(mActivity, ChatActivity.class);
-                intent.putExtra("userName","cuieney");
+                intent.putExtra("userName",list.get(position).getSender_id());
                 startActivity(intent);
             }
         });

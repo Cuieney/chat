@@ -1,6 +1,7 @@
 package com.android.youtube;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.android.youtube.entity.User;
 import com.android.youtube.utils.DBUtils;
@@ -22,6 +23,7 @@ public class App extends Application {
     private void init() {
         DBUtils.getInstance().init(this);
         List<User> userList = DBUtils.getInstance().getUser();
+        Log.i("oye", "init: "+userList.size());
         if (userList.size() > 0) {
             user = userList.get(0);
         }

@@ -25,12 +25,23 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         if(msg.getType() == ConnExt.PackageType.PT_MESSAGE){
             ConnExt.Message message = ConnExt.Message.parseFrom(msg.getData());
             Log.i(TAG, "channelRead0: "+message);
-            SQLiteDatabase writableDatabase = DBUtils.getInstance().getDbHelper().getWritableDatabase();
-            DaoSession daoSession = new DaoMaster(writableDatabase).newSession();
-            MessageDao messageDao = daoSession.getMessageDao();
 
+            Message entity = new Message();
+            ConnExt.MessageItem item = message.getMessage();
+            entity.setMessage_content(ConnExt.Text.parseFrom(item.getMessageContent()).getText());
+            entity.setReceiver_id((int) item.getReceiverId());
+            entity.setMessage_type(item.getMessageTypeValue());
+            entity.setReceiver_type(item.getReceiverTypeValue());
+            entity.setSend_time(item.getSendTime());
+            entity.setSender_device_id((int) item.getSenderDeviceId());
+            entity.setSender_type(item.getSenderTypeValue());
+            entity.setSeq(item.getSeq());
+            entity.setStatus(item.getStatusValue());
+            entity.setSender_type(item.getSenderTypeValue());
+            entity.setSender_id((int) item.getSenderId());
+            entity.setReceiver_id((int) item.getRequestId());
 
-            messageDao.insert(new Message());
+            DBUtils.getInstance().insertMessage(entity);
         }
     }
 

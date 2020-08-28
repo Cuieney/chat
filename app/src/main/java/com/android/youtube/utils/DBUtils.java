@@ -27,32 +27,39 @@ public class DBUtils {
         return instance;
     }
 
-    public void init(Context mContext){
+    public void init(Context mContext) {
         helper = new DaoMaster.DevOpenHelper(mContext, "chat-db");
         daoSession = new DaoMaster(helper.getWritableDatabase()).newSession();
     }
-    private DBUtils(){
+
+    private DBUtils() {
     }
 
     public DaoMaster.DevOpenHelper getDbHelper() {
         return helper;
     }
 
-    public void insertDevice(Devices devices){
+    public void insertDevice(Devices devices) {
         DevicesDao devicesDao = daoSession.getDevicesDao();
         devicesDao.insert(devices);
     }
 
-    public void insertUser(User user){
+    public void insertUser(User user) {
         UserDao userDao = daoSession.getUserDao();
         userDao.insert(user);
     }
 
-    public List<User> getUser(){
-        return  daoSession.loadAll(User.class);
+
+    public List<Message> getMessageList() {
+        return daoSession.loadAll(Message.class);
     }
 
-    public void insertMessage(Message message){
+
+    public List<User> getUser() {
+        return daoSession.loadAll(User.class);
+    }
+
+    public void insertMessage(Message message) {
         MessageDao messageDao = daoSession.getMessageDao();
         messageDao.insert(message);
     }
