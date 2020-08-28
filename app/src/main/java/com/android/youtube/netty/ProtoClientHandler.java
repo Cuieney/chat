@@ -1,8 +1,13 @@
 package com.android.youtube.netty;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.android.youtube.App;
+import com.android.youtube.entity.DaoMaster;
+import com.android.youtube.entity.DaoSession;
+import com.android.youtube.entity.MessageDao;
+import com.android.youtube.utils.DBUtils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,6 +24,10 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         if(msg.getType() == ConnExt.PackageType.PT_MESSAGE){
             ConnExt.Message message = ConnExt.Message.parseFrom(msg.getData());
             Log.i(TAG, "channelRead0: "+message);
+            SQLiteDatabase writableDatabase = DBUtils.getInstance().getDbHelper().getWritableDatabase();
+            DaoSession daoSession = new DaoMaster(writableDatabase).newSession();
+            MessageDao messageDao = daoSession.getMessageDao();
+            messageDao.insert()
         }
     }
 
@@ -34,12 +43,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         Log.d(TAG, "与服务端连接成功：" + ctx.toString());
-
-
         this.ctx = ctx;
-
-
-
         ConnExt.SignInInput.Builder builder = ConnExt.SignInInput.newBuilder();
 
         ConnExt.SignInInput signInInput = builder

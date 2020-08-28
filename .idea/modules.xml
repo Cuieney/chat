@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/app/project-youtubeEx-app.iml" filepath="$PROJECT_DIR$/app/project-youtubeEx-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/youtubeEx.iml" filepath="$PROJECT_DIR$/.idea/youtubeEx.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/youtubeEx-app.iml" filepath="$PROJECT_DIR$/app/youtubeEx-app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/im_lib/youtubeEx-im_lib.iml" filepath="$PROJECT_DIR$/im_lib/youtubeEx-im_lib.iml" />
     </modules>
   </component>
 </project>
