@@ -106,7 +106,7 @@ public class DBUtils {
         Collections.sort(list, new Comparator<Message>() {
             @Override
             public int compare(Message o1, Message o2) {
-                long t1 = o1.getSend_time() - o2.getSend_time();
+                long t1 = o2.getSend_time() - o1.getSend_time();
                 return (int) t1;
             }
         });

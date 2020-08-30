@@ -20,9 +20,18 @@ import com.android.youtube.adapter.BaseRecycerViewAdapter;
 import com.android.youtube.adapter.ChatAdapter;
 import com.android.youtube.entity.Message;
 import com.android.youtube.utils.DBUtils;
+import com.android.youtube.utils.RxBus;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
 
 public class ChatFragment   extends Fragment {
     private static String ARG_PARAM = "param_key";
@@ -39,6 +48,19 @@ public class ChatFragment   extends Fragment {
         mActivity = (MainActivity) context;
         mParam = getArguments().getString(ARG_PARAM);  //获取参数
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventBus.getDefault().unregister(this);
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.chat_fragment, container, false);
         view = root.findViewById(R.id.list);
@@ -66,6 +88,11 @@ public class ChatFragment   extends Fragment {
         super.onResume();
 
 
+        updateMessageData();
+
+    }
+
+    private void updateMessageData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -87,27 +114,8 @@ public class ChatFragment   extends Fragment {
                 });
             }
         }).start();
-
     }
 
-    private void getFilterData(){
-        List<Message> messageList = DBUtils.getInstance().getMessageList();
-        list = new ArrayList<>();
-        if (messageList.size()<=0) {
-            return;
-        }
-        for (int i = 0; i < messageList.size(); i++) {
-            Message message = messageList.get(i);
-            boolean isExist = false;
-            for (Message tmpMessage : list) {
-                if (message.getSeq() == tmpMessage.getSeq()) {
-                    isExist = true;
-                }
-            }
-
-
-        }
-    }
 
     private void initData(){
         view.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -123,6 +131,20 @@ public class ChatFragment   extends Fragment {
                 startActivity(new Intent(mActivity, AddFriendActivity.class));
             }
         });
+
+        RxBus.getDefault().toObservable(Message.class)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Message>() {
+            @Override
+            public void call(Message mBean) {
+                updateMessageData();
+            }
+        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Message mBean) {
+        updateMessageData();
     }
 
 }

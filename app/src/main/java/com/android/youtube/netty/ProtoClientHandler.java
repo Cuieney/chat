@@ -8,7 +8,10 @@ import com.android.youtube.App;
 import com.android.youtube.entity.Friend;
 import com.android.youtube.entity.Message;
 import com.android.youtube.utils.DBUtils;
+import com.android.youtube.utils.RxBus;
 import com.google.protobuf.InvalidProtocolBufferException;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.concurrent.TimeUnit;
 
@@ -47,7 +50,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
                     Friend friend = new Friend();
                     friend.setUser_id((long) entity.getSender_id());
                     DBUtils.getInstance().insertFriends(friend);
-
+                    EventBus.getDefault().post(entity);
                     Looper.prepare();
                     try {
                         Toast.makeText(App.app, "收到用户"+item.getSenderId()+"消息", Toast.LENGTH_SHORT).show();
@@ -55,6 +58,9 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
                         Log.e("error", e.toString());
                     }
                     Looper.loop();
+
+
+
                 }
             }).start();
 

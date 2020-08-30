@@ -27,6 +27,10 @@ import com.android.youtube.netty.Const;
 import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.JwtCallCredential;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +98,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void initData() {
         userID = getIntent().getIntExtra("userName", 0);
-        updateData(null);
+        updateData();
 
         msgList.setLayoutManager(new LinearLayoutManager(this));
         MsgListAdapter adapter = new MsgListAdapter(this, new ArrayList<String>());
@@ -156,7 +160,6 @@ public class ChatActivity extends AppCompatActivity {
                             });
 
 
-
                         } catch (Exception e) {
                             Log.i("oye", "run: " + e);
 
@@ -166,16 +169,17 @@ public class ChatActivity extends AppCompatActivity {
                 }).start();
             }
         });
+
     }
 
-    private void updateData1(Message entity){
+    private void updateData1(Message entity) {
         messageArrayList.add(entity);
         adapter = new ChatItemAdapter(ChatActivity.this, messageArrayList);
         msgList.setAdapter(adapter);
-        msgList.scrollToPosition(adapter.getItemCount()-1);
+        msgList.scrollToPosition(adapter.getItemCount() - 1);
     }
 
-    private void updateData(Message entity) {
+    private void updateData() {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -186,13 +190,11 @@ public class ChatActivity extends AppCompatActivity {
                     public void run() {
                         messageArrayList.clear();
                         messageArrayList.addAll(messageListByUserId);
-                        if (entity != null) {
-//                            messageArrayList.add(entity);
-                        }
+
                         adapter = new ChatItemAdapter(ChatActivity.this, messageArrayList);
                         msgList.setAdapter(adapter);
 
-                        msgList.scrollToPosition(adapter.getItemCount()-1);
+                        msgList.scrollToPosition(adapter.getItemCount() - 1);
                     }
 
                     ;
@@ -216,6 +218,29 @@ public class ChatActivity extends AppCompatActivity {
 
         msgList.setAdapter(adapter);
 
+
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(Message mBean) {
+        if (mBean.getSender_id() == userID) {
+            updateData1(mBean);
+        }
+    }
+
+    ;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
 
     }
 }
