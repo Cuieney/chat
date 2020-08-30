@@ -1,44 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#ffffff"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff">
 
     <RelativeLayout
         android:id="@+id/head"
-        android:padding="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDEDED">
+        android:background="#EDEDED"
+        android:padding="15dp">
 
-        <TextView
-            android:textSize="17sp"
-            android:text="微信(123)"
-            android:textColor="#3e3e3e"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
         <ImageView
             android:id="@+id/search"
-            android:layout_marginRight="40dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/search"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:layout_marginRight="40dp"
+            android:src="@drawable/search" />
 
         <ImageView
+            android:id="@+id/add_friend"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/add"
-            android:layout_width="20dp"
-            android:layout_height="20dp" />
+            android:src="@drawable/add" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="微信(123)"
+            android:textColor="#3e3e3e"
+            android:textSize="17sp" />
     </RelativeLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list"
-        app:layout_constraintTop_toBottomOf="@id/head"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/head"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
 </android.support.constraint.ConstraintLayout>

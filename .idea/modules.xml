@@ -3,11 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Desktop-project-youtubeEx.iml" filepath="$PROJECT_DIR$/Desktop-project-youtubeEx.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="youtubeEx/app" />
       <module fileurl="file://$PROJECT_DIR$/im_lib/im_lib.iml" filepath="$PROJECT_DIR$/im_lib/im_lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/project-youtubeEx.iml" filepath="$PROJECT_DIR$/project-youtubeEx.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/project-youtubeEx-app.iml" filepath="$PROJECT_DIR$/app/project-youtubeEx-app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/youtubeEx.iml" filepath="$PROJECT_DIR$/.idea/youtubeEx.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/im_lib/project-youtubeEx-im_lib.iml" filepath="$PROJECT_DIR$/.idea/modules/im_lib/project-youtubeEx-im_lib.iml" group="youtubeEx/im_lib" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/youtubeEx.iml" filepath="$PROJECT_DIR$/.idea/youtubeEx.iml" group="youtubeEx" />
       <module fileurl="file://$PROJECT_DIR$/app/youtubeEx-app.iml" filepath="$PROJECT_DIR$/app/youtubeEx-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/im_lib/youtubeEx-im_lib.iml" filepath="$PROJECT_DIR$/im_lib/youtubeEx-im_lib.iml" />
     </modules>

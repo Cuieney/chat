@@ -38,12 +38,6 @@ public class NettyClient {
      *需要在子线程中发起连接
      */
     private NettyClient() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                connect();
-            }
-        }).start();
     }
     /**
      * 获取与服务端的连接

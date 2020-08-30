@@ -94,4 +94,8 @@ dependencies {
 //    implementation 'com.google.protobuf:protobuf-java:3.5.0'
     //    implementation 'io.grpc:grpc-protobuf-lite:1.31.1'
     //    compile 'javax.annotation:javax.annotation-api:1.2'
+
+
+    implementation 'io.reactivex:rxandroid:1.2.1'
+    implementation 'io.reactivex:rxjava:1.2.4'
 }

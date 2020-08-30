@@ -89,8 +89,17 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
 
             startActivity(new Intent(MainActivity.this,SplashActivity.class));
             finish();
+        }else{
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    NettyClient.getInstance().connect();
+                }
+            }).start();
+
         }
-        NettyClient client = NettyClient.getInstance();
+
+
 
 
 //        ManagedChannel channel1 = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();
@@ -152,16 +161,22 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
     private void initData() {
         fragmentList.add(ChatFragment.newInstance(""));
         fragmentList.add(ContactFragment.newInstance(""));
-        fragmentList.add(VideoFragment.newInstance(""));
+//        fragmentList.add(VideoFragment.newInstance(""));
         fragmentList.add(MeFragment.newInstance(""));
 
         currentFragment = fragmentList.get(0);
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.container, currentFragment).commit();
         for (int i = 0; i < mTitles.length; i++) {
+            if (i == 2) {
+                continue;
+            }
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));
             if (i == 0) {
                 fragmentList.add(ChatFragment.newInstance("1"));
+            }else if(i == 3) {
+                fragmentList.add(MeFragment.newInstance(mTitles[i]));
+
             } else {
                 fragmentList.add(VideoFragment.newInstance(mTitles[i]));
 

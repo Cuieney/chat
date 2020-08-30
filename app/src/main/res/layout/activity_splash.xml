@@ -12,6 +12,7 @@
         android:id="@+id/user_phone"
         android:layout_width="0dp"
         android:hint="手机号"
+        android:inputType="number"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/user_name"
         app:layout_constraintEnd_toEndOf="parent"
