@@ -173,10 +173,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void updateData1(Message entity) {
-        messageArrayList.add(entity);
-        adapter = new ChatItemAdapter(ChatActivity.this, messageArrayList);
-        msgList.setAdapter(adapter);
-        msgList.scrollToPosition(adapter.getItemCount() - 1);
+//        messageArrayList.add(entity);
+//        adapter = new ChatItemAdapter(ChatActivity.this, messageArrayList);
+//        msgList.setAdapter(adapter);
+//        msgList.scrollToPosition(adapter.getItemCount() - 1);
     }
 
     private void updateData() {
@@ -223,9 +223,9 @@ public class ChatActivity extends AppCompatActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Message mBean) {
-        if (mBean.getSender_id() == userID) {
-            updateData1(mBean);
-        }
+//        if (mBean.getSender_id() == userID) {
+//            updateData1(mBean);
+//        }
     }
 
     ;

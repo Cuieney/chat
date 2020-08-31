@@ -131,7 +131,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         new Thread(new Runnable() {
             @Override
             public void run() {
-                NettyClient.getInstance().connect();
+//                NettyClient.getInstance().connect();
             }
         }).start();
     }
