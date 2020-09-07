@@ -96,7 +96,7 @@ public class ChatFragment   extends Fragment {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                list = DBUtils.getInstance().getMessageList();
+                list = DBUtils.getInstance().getMessageFromUser();
                 mActivity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -104,8 +104,7 @@ public class ChatFragment   extends Fragment {
                         adapter.setOnItemClickListener(new BaseRecycerViewAdapter.OnItemClickListener() {
                             @Override
                             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
-                                Intent intent = new Intent(mActivity, AddFriendActivity.class);
-
+                                Intent intent = new Intent(mActivity, ChatActivity.class);
                                 intent.putExtra("userName", list.get(position).getSender_id());
                                 startActivity(intent);
                             }
@@ -145,7 +144,7 @@ public class ChatFragment   extends Fragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(Message mBean) {
-//        updateMessageData();
+        updateMessageData();
     }
 
 }
