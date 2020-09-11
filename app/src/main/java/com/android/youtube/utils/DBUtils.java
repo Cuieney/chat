@@ -116,7 +116,7 @@ public class DBUtils {
     }
 
 
-    public List<Message> getMessageListByUserId(int senderID,int receiverID) {
+    public List<Message> getMessageListByUserId(long senderID,long receiverID) {
         List<Message> list = new ArrayList<Message>();
         try {
             MessageDao messageDao = daoSession.getMessageDao();
@@ -142,6 +142,10 @@ public class DBUtils {
 
     public List<NewFriend> getNewFriendList(){
         return  daoSession.loadAll(NewFriend.class);
+    }
+
+    public List<Friend> getFriendList(){
+        return  daoSession.loadAll(Friend.class);
     }
 
     public List<User> getUser() {

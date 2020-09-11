@@ -9,11 +9,12 @@ import android.widget.TextView;
 
 import com.android.youtube.R;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
+import com.android.youtube.entity.Friend;
 
 import java.util.List;
 
-public class ContactAdapter extends BaseRecycerViewAdapter<String, RecyclerView.ViewHolder> {
-    public ContactAdapter(Context context, List<String> list) {
+public class ContactAdapter extends BaseRecycerViewAdapter<Friend, RecyclerView.ViewHolder> {
+    public ContactAdapter(Context context, List<Friend> list) {
         super(context, list);
     }
 
@@ -27,46 +28,52 @@ public class ContactAdapter extends BaseRecycerViewAdapter<String, RecyclerView.
 
     @Override
     public void getBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        if (position == 4) {
-            ((HolderTitle) holder).setText("企业微信");
-        }
+//        if (position == 4) {
+//            ((HolderTitle) holder).setText("企业微信");
+//        }
 
-        if (position == 6) {
-            ((HolderTitle) holder).setText("A");
-        }
-
-        if (position == 8) {
-            ((HolderTitle) holder).setText("B");
-        }
+//        if (position == 6) {
+//            ((HolderTitle) holder).setText("A");
+//        }
+//
+//        if (position == 8) {
+//            ((HolderTitle) holder).setText("B");
+//        }
         switch (position) {
             case 0:
                 ((Holder) holder).setText("新的朋友");
                 ((Holder) holder).img.setImageResource(R.drawable.placeholder);
                 break;
-            case 1:
-                ((Holder) holder).setText("群聊");
-                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
-                break;
-            case 2:
-                ((Holder) holder).setText("标签");
-                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
-                break;
-            case 3:
-                ((Holder) holder).setText("公众号");
-                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
-                break;
-            case 5:
-                ((Holder) holder).setText("上海股份公司");
-
-
-                break;
-            case 7:
-                ((Holder) holder).setText("阿里云");
-                break;
-            case 9:
-                ((Holder) holder).setText("百度云");
+//            case 1:
+//                ((Holder) holder).setText("群聊");
+//                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
+//                break;
+//            case 2:
+//                ((Holder) holder).setText("标签");
+//                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
+//                break;
+//            case 3:
+//                ((Holder) holder).setText("公众号");
+//                ((Holder) holder).img.setImageResource(R.drawable.placeholder);
+//                break;
+//            case 5:
+//                ((Holder) holder).setText("上海股份公司");
+//                break;
+//            case 7:
+//                ((Holder) holder).setText("阿里云");
+//                break;
+            default:
+                ((Holder) holder).setText(list.get(position).getUser_id()+"");
                 break;
         }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mClickListener != null) {
+                    mClickListener.onItemClick(position,v,holder);
+                }
+            }
+        });
     }
 
     @Override

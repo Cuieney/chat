@@ -64,19 +64,19 @@ public class Message {
     private Long id;
     private String message_content;
     private int message_type;
-    private int receiver_id;
+    private long receiver_id;
     private int receiver_type;
     private long request_id;
     private long send_time;
-    private int sender_id;
+    private long sender_id;
     private int sender_device_id;
     private int sender_type;
     private long seq;
     private long status;
-@Generated(hash = 1171085737)
+@Generated(hash = 1806125957)
 public Message(Long id, String message_content, int message_type,
-        int receiver_id, int receiver_type, long request_id, long send_time,
-        int sender_id, int sender_device_id, int sender_type, long seq,
+        long receiver_id, int receiver_type, long request_id, long send_time,
+        long sender_id, int sender_device_id, int sender_type, long seq,
         long status) {
     this.id = id;
     this.message_content = message_content;
@@ -112,10 +112,10 @@ public int getMessage_type() {
 public void setMessage_type(int message_type) {
     this.message_type = message_type;
 }
-public int getReceiver_id() {
+public long getReceiver_id() {
     return this.receiver_id;
 }
-public void setReceiver_id(int receiver_id) {
+public void setReceiver_id(long receiver_id) {
     this.receiver_id = receiver_id;
 }
 public int getReceiver_type() {
@@ -136,10 +136,10 @@ public long getSend_time() {
 public void setSend_time(long send_time) {
     this.send_time = send_time;
 }
-public int getSender_id() {
+public long getSender_id() {
     return this.sender_id;
 }
-public void setSender_id(int sender_id) {
+public void setSender_id(long sender_id) {
     this.sender_id = sender_id;
 }
 public int getSender_device_id() {

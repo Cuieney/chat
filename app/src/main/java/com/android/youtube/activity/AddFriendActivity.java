@@ -49,7 +49,7 @@ public class AddFriendActivity extends AppCompatActivity {
     }
 
     private void initData() {
-        userID = getIntent().getIntExtra("userName", 0);
+        userID = getIntent().getIntExtra(com.android.youtube.utils.Const.USER_EXT_ID, 0);
 
         if(userID !=0){
             firendsId.setText(userID+"");
@@ -80,7 +80,7 @@ public class AddFriendActivity extends AppCompatActivity {
                         try {
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
                             LogicExtOuterClass.AddFriendReq friendReq = LogicExtOuterClass.AddFriendReq.newBuilder()
-                                    .setDescription("test")
+                                    .setDescription("test"+(userID == 0 ? Long.parseLong(firendID) : userID))
                                     .setFriendId(userID == 0 ? Long.parseLong(firendID) : userID)
                                     .setRemarks("hhhhh")
                                     .build();
@@ -92,6 +92,12 @@ public class AddFriendActivity extends AppCompatActivity {
                             loginChannel.shutdownNow();
                         } catch (Exception e) {
                             Log.i("oye", "run: " + e);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(AddFriendActivity.this, "不能重复添加朋友", Toast.LENGTH_SHORT).show();
+                                }
+                            });
 
                         }
                     }

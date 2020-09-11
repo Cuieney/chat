@@ -28,11 +28,11 @@ public class NewFriendAdapter extends BaseRecycerViewAdapter<NewFriend, NewFrien
     public void getBindViewHolder(NewFriendAdapter.Holder holder, int position) {
         NewFriend newFriend = list.get(position);
         holder.messageContent.setText(newFriend.getDescription());
-        holder.name.setText(newFriend.getNickname()+"");
+        holder.name.setText(newFriend.getNickname());
         int newFriendStatus = newFriend.getNewFriendStatus();
-        String status = "新朋友";
+        String status = "同意";
         if(newFriendStatus == 0){
-             status = "新朋友";
+             status = "同意";
         }else if(newFriendStatus == 1){
              status = "已添加";
         }

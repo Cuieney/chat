@@ -46,13 +46,19 @@
                 android:text="收到了红包" />
 
             <TextView
+                android:background="@color/green_color"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_marginRight="15dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/friend_status"
                 android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
-                android:text="新朋友" />
+                android:text="同意" />
 
         </RelativeLayout>
 

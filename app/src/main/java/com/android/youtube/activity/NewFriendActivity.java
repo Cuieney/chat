@@ -10,6 +10,7 @@ import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
 import com.android.youtube.adapter.NewFriendAdapter;
+import com.android.youtube.entity.Friend;
 import com.android.youtube.entity.Message;
 import com.android.youtube.entity.NewFriend;
 import com.android.youtube.netty.Const;
@@ -83,17 +84,19 @@ public class NewFriendActivity extends BaseActivity {
 
     private void agreeFriend(NewFriend friend, int position) {
         ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
-        LogicExtOuterClass.AddFriendReq friendReq = LogicExtOuterClass.AddFriendReq.newBuilder().setFriendId(friend.getFriend_id())
+        LogicExtOuterClass.AgreeAddFriendReq friendReq = LogicExtOuterClass.AgreeAddFriendReq.newBuilder()
+                .setUserId(friend.getFriend_id())
                 .setRemarks("xxx")
-                .setDescription(friend.getDescription()).build();
+                .build();
 
 
-        LogicExtOuterClass.AddFriendResp resp = LogicExtGrpc
+        LogicExtOuterClass.AgreeAddFriendResp resp = LogicExtGrpc
                 .newBlockingStub(loginChannel)
                 .withCallCredentials(new JwtCallCredential())
-                .addFriend(friendReq);
+                .agreeAddFriend(friendReq);
 
         Log.i("NewFriendActivity", "run: " + resp.getSerializedSize());
+
 
 
         loginChannel.shutdownNow();
@@ -102,6 +105,12 @@ public class NewFriendActivity extends BaseActivity {
         DBUtils.getInstance().insertNewFriends(friend);
 
         newFriends.remove(position);
+
+        Friend newfrined = new Friend();
+        friend.setFriend_id(friend.getFriend_id());
+        friend.setNickname(friend.getNickname());
+        DBUtils.getInstance().insertFriends(newfrined);
+        EventBus.getDefault().post(newfrined);
 
         sectionRefresh(friend);
 

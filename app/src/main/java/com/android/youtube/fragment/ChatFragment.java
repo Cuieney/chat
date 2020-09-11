@@ -19,6 +19,7 @@ import com.android.youtube.activity.MainActivity;
 import com.android.youtube.adapter.BaseRecycerViewAdapter;
 import com.android.youtube.adapter.ChatAdapter;
 import com.android.youtube.entity.Message;
+import com.android.youtube.utils.Const;
 import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.RxBus;
 
@@ -105,11 +106,13 @@ public class ChatFragment   extends Fragment {
                             @Override
                             public void onItemClick(int position, View view, RecyclerView.ViewHolder vh) {
                                 Intent intent = new Intent(mActivity, ChatActivity.class);
-                                intent.putExtra("userName", list.get(position).getSender_id());
+                                intent.putExtra(Const.USER_EXT_ID, list.get(position).getSender_id());
                                 startActivity(intent);
                             }
                         });
-                        view.setAdapter(adapter);
+                        if (view != null) {
+                            view.setAdapter(adapter);
+                        }
                     }
                 });
             }
@@ -132,14 +135,7 @@ public class ChatFragment   extends Fragment {
             }
         });
 
-        RxBus.getDefault().toObservable(Message.class)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Action1<Message>() {
-            @Override
-            public void call(Message mBean) {
-                updateMessageData();
-            }
-        });
+
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

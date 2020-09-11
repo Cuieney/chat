@@ -41,7 +41,7 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
                         Log.i(TAG, "run: 收到文字消息");
                         String text = ConnExt.Text.newBuilder().setTextBytes(item.getMessageContent()).build().getText();
                         entity.setMessage_content(text);
-                        entity.setReceiver_id((int) item.getReceiverId());
+                        entity.setReceiver_id(item.getReceiverId());
                         entity.setMessage_type(item.getMessageTypeValue());
                         entity.setReceiver_type(item.getReceiverTypeValue());
                         entity.setSend_time(item.getSendTime());
@@ -49,17 +49,21 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
                         entity.setSeq(item.getSeq());
                         entity.setStatus(item.getStatusValue());
                         entity.setSender_type(item.getSenderTypeValue());
-                        entity.setSender_id((int) item.getSenderId());
+                        entity.setSender_id(item.getSenderId());
                         DBUtils.getInstance().insertMessage(entity);
 
                         Friend friend = new Friend();
                         friend.setUser_id((long) entity.getSender_id());
                         DBUtils.getInstance().insertFriends(friend);
                         EventBus.getDefault().post(entity);
+
+                        toastTips("收到用户" + item.getSenderId() + "消息");
                     } else if (item.getMessageType() == ConnExt.MessageType.MT_COMMAND) {
                         Log.i(TAG, "run: 收到指令消息");
                         try {
                             ConnExt.Command command = ConnExt.Command.parseFrom(item.getMessageContent());
+                            Log.i(TAG, "run: 收到指令消息:"+command.getCode());
+
                             if (command.getCode() == Push.PushCode.PC_ADD_FRIEND.getNumber()) {
                                 Push.AddFriendPush addFriendPush = Push.AddFriendPush.parseFrom(command.getData());
                                 NewFriend newFriend = new NewFriend();
@@ -70,22 +74,35 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
                                 newFriend.setNickname(addFriendPush.getNickname());
                                 DBUtils.getInstance().insertNewFriends(newFriend);
                                 EventBus.getDefault().post(newFriend);
+                                toastTips(addFriendPush.getFriendId()+"请求添加好友");
+                            }else if(command.getCode() == Push.PushCode.PC_AGREE_ADD_FRIEND.getNumber()){
+                                Push.AgreeAddFriendPush agreeAddFriendPush = Push.AgreeAddFriendPush.parseFrom(command.getData());
+                                Friend friend = new Friend();
+                                friend.setUser_id(agreeAddFriendPush.getFriendId());
+                                friend.setNickname(agreeAddFriendPush.getNickname());
+                                DBUtils.getInstance().insertFriends(friend);
+                                EventBus.getDefault().post(friend);
+                                toastTips(agreeAddFriendPush.getFriendId()+"同意好友请求");
                             }
                         } catch (InvalidProtocolBufferException e) {
                             e.printStackTrace();
                         }
                     }
-                    Looper.prepare();
-                    try {
-                        Toast.makeText(App.app, "收到用户" + item.getSenderId() + "消息", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        Log.e("error", e.toString());
-                    }
-                    Looper.loop();
+
                 }
             }).start();
 
         }
+    }
+
+    public void toastTips(String msg){
+        Looper.prepare();
+        try {
+            Toast.makeText(App.app, msg, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Log.e("error", e.toString());
+        }
+        Looper.loop();
     }
 
 

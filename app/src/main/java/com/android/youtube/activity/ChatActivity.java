@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
     private TextView userName;
     private EditText inputMsg;
 
-    private int userID;
+    private long userID;
     private List<Message> messageArrayList;
     private ChatItemAdapter adapter;
 
@@ -97,7 +97,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void initData() {
-        userID = getIntent().getIntExtra("userName", 0);
+        userID = getIntent().getLongExtra(com.android.youtube.utils.Const.USER_EXT_ID, 0);
         updateData();
 
         msgList.setLayoutManager(new LinearLayoutManager(this));

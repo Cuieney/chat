@@ -34,7 +34,7 @@ public class ChatItemAdapter extends BaseRecycerViewAdapter<Message, ChatItemAda
     @Override
     public int getItemViewType(int position) {
         Message message = list.get(position);
-        int sender_id = message.getSender_id();
+        long sender_id = message.getSender_id();
         if(sender_id == App.user.getUserId()){
             return R.layout.item_chat_right;
         }
