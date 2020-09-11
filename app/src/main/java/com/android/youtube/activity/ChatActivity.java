@@ -143,6 +143,7 @@ public class ChatActivity extends AppCompatActivity {
                             entity.setSender_type(2);
                             entity.setStatus(1);
                             entity.setSender_id(App.user.getUserId());
+
                             LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
                             Log.i("ChatActivity", "run: " + resp.getSeq());
 
@@ -228,7 +229,7 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    ;
+
 
     @Override
     protected void onStart() {

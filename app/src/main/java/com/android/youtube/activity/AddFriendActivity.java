@@ -78,14 +78,16 @@ public class AddFriendActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try {
-                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText(inputMsg.getText().toString()).build();
                             ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
                             LogicExtOuterClass.AddFriendReq friendReq = LogicExtOuterClass.AddFriendReq.newBuilder()
                                     .setDescription("test")
-                                    .setFriendId(userID == 0 ? Integer.parseInt(firendID) : userID)
+                                    .setFriendId(userID == 0 ? Long.parseLong(firendID) : userID)
                                     .setRemarks("hhhhh")
                                     .build();
-                            LogicExtOuterClass.AddFriendResp addFriendResp = LogicExtGrpc.newBlockingStub(loginChannel).addFriend(friendReq);
+                            LogicExtOuterClass.AddFriendResp addFriendResp = LogicExtGrpc
+                                    .newBlockingStub(loginChannel)
+                                    .withCallCredentials(new JwtCallCredential())
+                                    .addFriend(friendReq);
                             Log.i("ChatActivity", "run: " + addFriendResp.getSerializedSize());
                             loginChannel.shutdownNow();
                         } catch (Exception e) {

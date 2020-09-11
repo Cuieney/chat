@@ -12,6 +12,8 @@ import com.android.youtube.entity.Friend;
 import com.android.youtube.entity.FriendDao;
 import com.android.youtube.entity.Message;
 import com.android.youtube.entity.MessageDao;
+import com.android.youtube.entity.NewFriend;
+import com.android.youtube.entity.NewFriendDao;
 import com.android.youtube.entity.User;
 import com.android.youtube.entity.UserDao;
 
@@ -138,8 +140,9 @@ public class DBUtils {
         return list;
     }
 
-
-
+    public List<NewFriend> getNewFriendList(){
+        return  daoSession.loadAll(NewFriend.class);
+    }
 
     public List<User> getUser() {
         return daoSession.loadAll(User.class);
@@ -152,6 +155,11 @@ public class DBUtils {
 
     public void insertFriends(Friend friend) {
         FriendDao dao = daoSession.getFriendDao();
+        dao.insertOrReplace(friend);
+    }
+
+    public void insertNewFriends(NewFriend friend) {
+        NewFriendDao dao = daoSession.getNewFriendDao();
         dao.insertOrReplace(friend);
     }
 

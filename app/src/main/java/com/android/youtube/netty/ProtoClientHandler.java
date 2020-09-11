@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.android.youtube.App;
 import com.android.youtube.entity.Friend;
 import com.android.youtube.entity.Message;
+import com.android.youtube.entity.NewFriend;
 import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.RxBus;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -19,6 +20,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.SimpleChannelInboundHandler;
 import pb.ConnExt;
+import pb.Push;
 
 public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Output> {
     private static final String TAG = "ProtoClientHandler";
@@ -28,39 +30,58 @@ public class ProtoClientHandler extends SimpleChannelInboundHandler<ConnExt.Outp
         Log.d(TAG, "收到服务器消息 " + msg + " ");
         if (msg.getType() == ConnExt.PackageType.PT_MESSAGE) {
             ConnExt.Message message = ConnExt.Message.parseFrom(msg.getData());
+
             Log.i(TAG, "channelRead0: " + message);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
                     Message entity = new Message();
                     ConnExt.MessageItem item = message.getMessage();
-                    String text = ConnExt.Text.newBuilder().setTextBytes(item.getMessageContent()).build().getText();
-                    entity.setMessage_content(text);
-                    entity.setReceiver_id((int) item.getReceiverId());
-                    entity.setMessage_type(item.getMessageTypeValue());
-                    entity.setReceiver_type(item.getReceiverTypeValue());
-                    entity.setSend_time(item.getSendTime());
-                    entity.setSender_device_id((int) item.getSenderDeviceId());
-                    entity.setSeq(item.getSeq());
-                    entity.setStatus(item.getStatusValue());
-                    entity.setSender_type(item.getSenderTypeValue());
-                    entity.setSender_id((int) item.getSenderId());
-                    DBUtils.getInstance().insertMessage(entity);
+                    if (item.getMessageType() == ConnExt.MessageType.MT_TEXT) {
+                        Log.i(TAG, "run: 收到文字消息");
+                        String text = ConnExt.Text.newBuilder().setTextBytes(item.getMessageContent()).build().getText();
+                        entity.setMessage_content(text);
+                        entity.setReceiver_id((int) item.getReceiverId());
+                        entity.setMessage_type(item.getMessageTypeValue());
+                        entity.setReceiver_type(item.getReceiverTypeValue());
+                        entity.setSend_time(item.getSendTime());
+                        entity.setSender_device_id((int) item.getSenderDeviceId());
+                        entity.setSeq(item.getSeq());
+                        entity.setStatus(item.getStatusValue());
+                        entity.setSender_type(item.getSenderTypeValue());
+                        entity.setSender_id((int) item.getSenderId());
+                        DBUtils.getInstance().insertMessage(entity);
 
-                    Friend friend = new Friend();
-                    friend.setUser_id((long) entity.getSender_id());
-                    DBUtils.getInstance().insertFriends(friend);
-                    EventBus.getDefault().post(entity);
+                        Friend friend = new Friend();
+                        friend.setUser_id((long) entity.getSender_id());
+                        DBUtils.getInstance().insertFriends(friend);
+                        EventBus.getDefault().post(entity);
+                    } else if (item.getMessageType() == ConnExt.MessageType.MT_COMMAND) {
+                        Log.i(TAG, "run: 收到指令消息");
+                        try {
+                            ConnExt.Command command = ConnExt.Command.parseFrom(item.getMessageContent());
+                            if (command.getCode() == Push.PushCode.PC_ADD_FRIEND.getNumber()) {
+                                Push.AddFriendPush addFriendPush = Push.AddFriendPush.parseFrom(command.getData());
+                                NewFriend newFriend = new NewFriend();
+                                newFriend.setFriend_id(addFriendPush.getFriendId());
+                                newFriend.setAvatar_url(addFriendPush.getAvatarUrl());
+                                newFriend.setNewFriendStatus(0);
+                                newFriend.setDescription(addFriendPush.getDescription());
+                                newFriend.setNickname(addFriendPush.getNickname());
+                                DBUtils.getInstance().insertNewFriends(newFriend);
+                                EventBus.getDefault().post(newFriend);
+                            }
+                        } catch (InvalidProtocolBufferException e) {
+                            e.printStackTrace();
+                        }
+                    }
                     Looper.prepare();
                     try {
-                        Toast.makeText(App.app, "收到用户"+item.getSenderId()+"消息", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(App.app, "收到用户" + item.getSenderId() + "消息", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         Log.e("error", e.toString());
                     }
                     Looper.loop();
-
-
-
                 }
             }).start();
 
