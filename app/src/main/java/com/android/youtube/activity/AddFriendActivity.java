@@ -31,7 +31,7 @@ import pb.LogicExtOuterClass;
 public class AddFriendActivity extends AppCompatActivity {
 
     private RecyclerView msgList;
-    private Button back;
+    private ImageView back;
     private Button sendMsg;
     private Button addFriend;
     private TextView userName;
@@ -150,7 +150,7 @@ public class AddFriendActivity extends AppCompatActivity {
 
     private void initView() {
         msgList = ((RecyclerView) findViewById(R.id.msg_list));
-        back = ((Button) findViewById(R.id.back));
+        back = ((ImageView) findViewById(R.id.back));
         sendMsg = ((Button) findViewById(R.id.send_msg));
         addFriend = ((Button) findViewById(R.id.add_friend));
         userName = ((TextView) findViewById(R.id.user_name));
