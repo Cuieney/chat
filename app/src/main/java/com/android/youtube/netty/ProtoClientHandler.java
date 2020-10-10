@@ -9,7 +9,6 @@ import com.android.youtube.entity.Friend;
 import com.android.youtube.entity.Message;
 import com.android.youtube.entity.NewFriend;
 import com.android.youtube.utils.DBUtils;
-import com.android.youtube.utils.RxBus;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import org.greenrobot.eventbus.EventBus;

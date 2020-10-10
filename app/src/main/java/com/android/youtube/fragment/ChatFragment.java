@@ -21,7 +21,6 @@ import com.android.youtube.adapter.ChatAdapter;
 import com.android.youtube.entity.Message;
 import com.android.youtube.utils.Const;
 import com.android.youtube.utils.DBUtils;
-import com.android.youtube.utils.RxBus;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -30,9 +29,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
-import rx.schedulers.Schedulers;
 
 public class ChatFragment   extends Fragment {
     private static String ARG_PARAM = "param_key";

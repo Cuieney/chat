@@ -24,6 +24,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:background="#ffffff"
+        android:id="@+id/user_info_container"
         android:padding="15dp"
 
         android:layout_height="wrap_content">

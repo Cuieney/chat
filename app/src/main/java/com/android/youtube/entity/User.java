@@ -16,15 +16,17 @@ public class User {
     private String userName;
     private String userPhone;
     private String token;
+    private String userImage;
     private int userId;
     private int deviceId;
-@Generated(hash = 1974669336)
+@Generated(hash = 1485938269)
 public User(Long id, String userName, String userPhone, String token,
-        int userId, int deviceId) {
+        String userImage, int userId, int deviceId) {
     this.id = id;
     this.userName = userName;
     this.userPhone = userPhone;
     this.token = token;
+    this.userImage = userImage;
     this.userId = userId;
     this.deviceId = deviceId;
 }
@@ -66,6 +68,12 @@ public int getDeviceId() {
 }
 public void setDeviceId(int deviceId) {
     this.deviceId = deviceId;
+}
+public String getUserImage() {
+    return this.userImage;
+}
+public void setUserImage(String userImage) {
+    this.userImage = userImage;
 }
 
     

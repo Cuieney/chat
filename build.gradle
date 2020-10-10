@@ -58,4 +58,6 @@ ext {
             protobuf                     : "com.google.protobuf:protobuf-java:3.5.0",
 
     ]
+
+    glideVersion = "4.9.0"
 }

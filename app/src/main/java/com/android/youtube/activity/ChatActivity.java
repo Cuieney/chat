@@ -26,6 +26,7 @@ import com.android.youtube.entity.Message;
 import com.android.youtube.netty.Const;
 import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.JwtCallCredential;
+import com.android.youtube.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -36,6 +37,7 @@ import java.util.List;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.reactivex.functions.Consumer;
 import pb.ConnExt;
 import pb.LogicExtGrpc;
 import pb.LogicExtOuterClass;
@@ -114,63 +116,57 @@ public class ChatActivity extends AppCompatActivity {
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            String text = inputMsg.getText().toString();
-                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText(text).build();
-                            ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
-                            long currentTime = System.currentTimeMillis();
-                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass
-                                    .SendMessageReq
-                                    .newBuilder()
-                                    .setMessageType(ConnExt.MessageType.MT_TEXT)
-                                    .setSendTime(currentTime)
-                                    .setReceiverId(userID)
-                                    .setIsPersist(true)
-                                    .setMessageContent(xxxx.getTextBytes())
-                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
-                                    .build();
-
-                            Message entity = new Message();
-                            entity.setMessage_content(text);
-                            entity.setReceiver_id(userID);
-                            entity.setMessage_type(1);
-                            entity.setReceiver_type(1);
-                            entity.setSend_time(currentTime);
-                            entity.setSender_type(2);
-                            entity.setStatus(1);
-                            entity.setSender_id(App.user.getUserId());
-
-                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
-                            Log.i("ChatActivity", "run: " + resp.getSeq());
-
-                            DBUtils.getInstance().insertMessage(entity);
-
-                            loginChannel.shutdownNow();
-
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    inputMsg.setText("");
-                                    updateData1(entity);
-                                }
-                            });
-
-
-                        } catch (Exception e) {
-                            Log.i("oye", "run: " + e);
-
-                        }
-                    }
-
-                }).start();
+                sendMsg();
             }
         });
 
+    }
+
+    private void sendMsg() {
+        String text = inputMsg.getText().toString();
+        ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText(text).build();
+        long currentTime = System.currentTimeMillis();
+        LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass
+                .SendMessageReq
+                .newBuilder()
+                .setMessageType(ConnExt.MessageType.MT_TEXT)
+                .setSendTime(currentTime)
+                .setReceiverId(userID)
+                .setIsPersist(true)
+                .setMessageContent(xxxx.getTextBytes())
+                .setReceiverType(ConnExt.ReceiverType.RT_USER)
+                .build();
+
+        Message entity = new Message();
+        entity.setMessage_content(text);
+        entity.setReceiver_id(userID);
+        entity.setMessage_type(1);
+        entity.setReceiver_type(1);
+        entity.setSend_time(currentTime);
+        entity.setSender_type(2);
+        entity.setStatus(1);
+        entity.setSender_id(App.user.getUserId());
+
+
+        NetworkUtils.getInstance().sendMsg(build)
+                .subscribe(new Consumer<LogicExtOuterClass.SendMessageResp>() {
+                    @Override
+                    public void accept(LogicExtOuterClass.SendMessageResp sendMessageResp) {
+                        Log.i("ChatActivity", "run: " + userID);
+                        Log.i("ChatActivity", "run: " + sendMessageResp.getSeq());
+
+                        inputMsg.setText("");
+                        updateData1(entity);
+
+                        DBUtils.getInstance().insertMessage(entity);
+
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable e) {
+                        Log.i("oye sendmsg", "run: " + e);
+                    }
+                });
     }
 
     private void updateData1(Message entity) {
@@ -228,7 +224,6 @@ public class ChatActivity extends AppCompatActivity {
             updateData1(mBean);
         }
     }
-
 
 
     @Override

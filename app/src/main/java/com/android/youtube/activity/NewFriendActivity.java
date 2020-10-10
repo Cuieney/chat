@@ -16,6 +16,7 @@ import com.android.youtube.entity.NewFriend;
 import com.android.youtube.netty.Const;
 import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.JwtCallCredential;
+import com.android.youtube.utils.NetworkUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.reactivex.functions.Consumer;
 import pb.LogicExtGrpc;
 import pb.LogicExtOuterClass;
 
@@ -83,39 +85,40 @@ public class NewFriendActivity extends BaseActivity {
     }
 
     private void agreeFriend(NewFriend friend, int position) {
-        ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
         LogicExtOuterClass.AgreeAddFriendReq friendReq = LogicExtOuterClass.AgreeAddFriendReq.newBuilder()
                 .setUserId(friend.getFriend_id())
                 .setRemarks("xxx")
                 .build();
 
 
-        LogicExtOuterClass.AgreeAddFriendResp resp = LogicExtGrpc
-                .newBlockingStub(loginChannel)
-                .withCallCredentials(new JwtCallCredential())
-                .agreeAddFriend(friendReq);
+        NetworkUtils.getInstance().agreeAddFriend(friendReq)
+                .subscribe(new Consumer<LogicExtOuterClass.AgreeAddFriendResp>() {
+                    @Override
+                    public void accept(LogicExtOuterClass.AgreeAddFriendResp agreeAddFriendResp) {
+                        Log.i("NewFriendActivity", "run: " + agreeAddFriendResp.getSerializedSize());
+                        friend.setNewFriendStatus(1);
 
-        Log.i("NewFriendActivity", "run: " + resp.getSerializedSize());
+                        DBUtils.getInstance().insertNewFriends(friend);
 
+                        newFriends.remove(position);
 
+                        Friend newfrined = new Friend();
+                        friend.setFriend_id(friend.getFriend_id());
+                        friend.setNickname(friend.getNickname());
+                        DBUtils.getInstance().insertFriends(newfrined);
+                        EventBus.getDefault().post(newfrined);
 
-        loginChannel.shutdownNow();
-        friend.setNewFriendStatus(1);
+                        sectionRefresh(friend);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        Log.i("oye", "agreeFriend: " + throwable.getMessage());
+                    }
+                });
 
-        DBUtils.getInstance().insertNewFriends(friend);
-
-        newFriends.remove(position);
-
-        Friend newfrined = new Friend();
-        friend.setFriend_id(friend.getFriend_id());
-        friend.setNickname(friend.getNickname());
-        DBUtils.getInstance().insertFriends(newfrined);
-        EventBus.getDefault().post(newfrined);
-
-        sectionRefresh(friend);
 
     }
-
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)

@@ -1,63 +1,35 @@
 package com.android.youtube.activity;
 
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.youtube.R;
-import com.android.youtube.adapter.MsgListAdapter;
-import com.android.youtube.netty.Const;
-import com.android.youtube.utils.JwtCallCredential;
+import com.android.youtube.utils.NetworkUtils;
 
-import java.util.ArrayList;
-
-import io.grpc.ManagedChannel;
-import io.grpc.ManagedChannelBuilder;
-import pb.ConnExt;
-import pb.LogicExtGrpc;
+import io.reactivex.functions.Consumer;
 import pb.LogicExtOuterClass;
 
-public class AddFriendActivity extends AppCompatActivity {
+public class AddFriendActivity extends BaseActivity {
 
-    private RecyclerView msgList;
     private ImageView back;
-    private Button sendMsg;
-    private Button addFriend;
-    private TextView userName;
-    private EditText inputMsg;
+    private TextView addFriend;
     private EditText firendsId;
     private int userID;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_friend);
 
-        initView();
-        initData();
+    @Override
+    public int setContentView() {
+        return R.layout.activity_add_friend;
     }
 
-    private void initData() {
-        userID = getIntent().getIntExtra(com.android.youtube.utils.Const.USER_EXT_ID, 0);
+    public void initData() {
 
-        if(userID !=0){
-            firendsId.setText(userID+"");
-        }
-        msgList.setLayoutManager(new LinearLayoutManager(this));
-        MsgListAdapter adapter = new MsgListAdapter(this, new ArrayList<String>());
-        msgList.setAdapter(adapter);
-        userName.setText(userID + "");
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,87 +46,35 @@ public class AddFriendActivity extends AppCompatActivity {
                     Toast.makeText(AddFriendActivity.this, "请输入朋友ID", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
-                            LogicExtOuterClass.AddFriendReq friendReq = LogicExtOuterClass.AddFriendReq.newBuilder()
-                                    .setDescription("test"+(userID == 0 ? Long.parseLong(firendID) : userID))
-                                    .setFriendId(userID == 0 ? Long.parseLong(firendID) : userID)
-                                    .setRemarks("hhhhh")
-                                    .build();
-                            LogicExtOuterClass.AddFriendResp addFriendResp = LogicExtGrpc
-                                    .newBlockingStub(loginChannel)
-                                    .withCallCredentials(new JwtCallCredential())
-                                    .addFriend(friendReq);
-                            Log.i("ChatActivity", "run: " + addFriendResp.getSerializedSize());
-                            loginChannel.shutdownNow();
-                        } catch (Exception e) {
-                            Log.i("oye", "run: " + e);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(AddFriendActivity.this, "不能重复添加朋友", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                LogicExtOuterClass.AddFriendReq friendReq = LogicExtOuterClass.AddFriendReq.newBuilder()
+                        .setDescription("test"+(userID == 0 ? Long.parseLong(firendID) : userID))
+                        .setFriendId(userID == 0 ? Long.parseLong(firendID) : userID)
+                        .setRemarks("hhhhh")
+                        .build();
 
-                        }
-                    }
-
-                }).start();
-
+                NetworkUtils.getInstance().addFriend(friendReq)
+                        .subscribe(new Consumer<LogicExtOuterClass.AddFriendResp>() {
+                            @Override
+                            public void accept(LogicExtOuterClass.AddFriendResp addFriendResp) {
+                                Log.i("ChatActivity", "run: " + addFriendResp.getSerializedSize());
+                                Toast.makeText(AddFriendActivity.this, "添加朋友成功", Toast.LENGTH_SHORT).show();
+                            }
+                        }, new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) {
+                                Log.i("oye", "run: " + throwable);
+                                Toast.makeText(AddFriendActivity.this, "不能重复添加朋友", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
-        });
-        sendMsg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String firendID = firendsId.getText().toString();
-                if (TextUtils.isEmpty(firendID) && userID == 0) {
-
-                    Toast.makeText(AddFriendActivity.this, "请输入朋友ID", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            ConnExt.Text xxxx = ConnExt.Text.newBuilder().setText(inputMsg.getText().toString()).build();
-                            ManagedChannel loginChannel = ManagedChannelBuilder.forAddress(Const.LOGIC_EXT_HOST, Const.MSG_SOCKET_PORT).usePlaintext().build();
-                            LogicExtOuterClass.SendMessageReq build = LogicExtOuterClass
-                                    .SendMessageReq
-                                    .newBuilder()
-                                    .setMessageType(ConnExt.MessageType.MT_TEXT)
-                                    .setSendTime(System.currentTimeMillis())
-                                    .setReceiverId(userID == 0 ? Integer.parseInt(firendID) : userID)
-                                    .setIsPersist(true)
-                                    .setMessageContent(xxxx.getTextBytes())
-                                    .setReceiverType(ConnExt.ReceiverType.RT_USER)
-                                    .build();
-                            Log.i("ChatActivity", "run: " + (userID == 0 ? Integer.parseInt(firendID) : userID));
-                            LogicExtOuterClass.SendMessageResp resp = LogicExtGrpc.newBlockingStub(loginChannel).withCallCredentials(new JwtCallCredential()).sendMessage(build);
-                            Log.i("ChatActivity", "run: " + resp.getSeq());
-                            loginChannel.shutdownNow();
 
 
-                        } catch (Exception e) {
-                            Log.i("oye", "run: " + e);
-
-                        }
-                    }
-
-                }).start();
-            }
         });
     }
 
-    private void initView() {
-        msgList = ((RecyclerView) findViewById(R.id.msg_list));
+    public void initView() {
         back = ((ImageView) findViewById(R.id.back));
-        sendMsg = ((Button) findViewById(R.id.send_msg));
-        addFriend = ((Button) findViewById(R.id.add_friend));
-        userName = ((TextView) findViewById(R.id.user_name));
-        inputMsg = ((EditText) findViewById(R.id.msg_content));
+        addFriend = ((TextView) findViewById(R.id.add_friend));
         firendsId = ((EditText) findViewById(R.id.friend_ids));
     }
 }

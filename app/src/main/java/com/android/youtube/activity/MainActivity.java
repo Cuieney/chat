@@ -100,18 +100,6 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
         }
 
 
-
-
-//        ManagedChannel channel1 = ManagedChannelBuilder.forAddress(Const.USER_EXT_HOST, Const.USER_EXT_PORT).usePlaintext().build();
-//        UserExtGrpc.UserExtBlockingStub blockingStub1 = UserExtGrpc.newBlockingStub(channel1);
-//        UserExtOuterClass.SignInReq signInReq1 = UserExtOuterClass.SignInReq.newBuilder().setDeviceId(8).setPhoneNumber("18312345678").build();
-//        UserExtOuterClass.SignInResp resp1 = blockingStub1.signIn(signInReq1);
-//
-//        App.signInResp1 = resp1;
-//        Log.i("oye", "run1: "+resp1.getToken()+"  "+ resp1.getUserId());
-//        channel1.shutdownNow();
-
-
     }
 
     public void setStatusBarTransparent() {

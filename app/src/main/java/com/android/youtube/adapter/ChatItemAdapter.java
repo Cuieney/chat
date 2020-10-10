@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.entity.Message;
+import com.android.youtube.image.ImageLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,6 +46,11 @@ public class ChatItemAdapter extends BaseRecycerViewAdapter<Message, ChatItemAda
     public void getBindViewHolder(ChatItemAdapter.Holder holder, int position) {
         holder.content.setText(list.get(position).getMessage_content());
         holder.time.setText(dateToStamp(list.get(position).getSend_time()));
+        int itemViewType = getItemViewType(position);
+        if(itemViewType == R.layout.item_chat_right){
+            ImageLoader.getInstance().load(App.user.getUserImage()).into(holder.head_img);
+
+        }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
