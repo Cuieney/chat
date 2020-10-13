@@ -1,25 +1,23 @@
 package com.android.youtube.activity;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.entity.User;
 import com.android.youtube.image.ImageLoader;
+import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.NetworkUtils;
 
 import java.io.BufferedOutputStream;
@@ -30,12 +28,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
-import io.reactivex.Flowable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 import pb.UserExtOuterClass;
 import top.zibin.luban.Luban;
 import top.zibin.luban.OnCompressListener;
@@ -74,6 +68,8 @@ public class InformationActivity extends BaseActivity {
         user = App.user;
         userId.setText(user.getUserId() + "");
         userName.setText(App.user.getUserName());
+        ImageLoader.getInstance().load(App.user.getUserImage()).placeholder(R.drawable.head).centerCrop().into(headImg);
+
         userIdContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +132,8 @@ public class InformationActivity extends BaseActivity {
                     public void accept(UserExtOuterClass.UpdateUserResp updateUserResp) {
                         user.setUserImage(file.getAbsolutePath());
                         App.user = user;
-                        ImageLoader.getInstance().load(file.getAbsolutePath()).into(headImg);
+                        ImageLoader.getInstance().load(file.getAbsolutePath()).centerInside().into(headImg);
+                        DBUtils.getInstance().insertUser(App.user);
                     }
                 }, new Consumer<Throwable>() {
                     @Override

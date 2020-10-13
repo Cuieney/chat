@@ -33,6 +33,7 @@
 
             android:id="@+id/head"
             android:src="@drawable/head"
+            android:scaleType="centerCrop"
             android:layout_width="60dp"
             android:layout_height="60dp" />
         <TextView

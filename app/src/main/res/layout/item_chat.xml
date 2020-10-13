@@ -10,6 +10,7 @@
     <ImageView
         android:id="@+id/head"
         android:layout_width="60dp"
+        android:scaleType="centerCrop"
         android:layout_height="60dp"
         android:src="@drawable/head" />
 

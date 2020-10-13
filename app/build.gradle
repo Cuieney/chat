@@ -87,7 +87,7 @@ dependencies {
     implementation 'io.grpc:grpc-okhttp:1.12.1'
     implementation 'io.grpc:grpc-stub:1.12.1'
     implementation 'org.greenrobot:greendao:3.3.0'
-//    implementation project(path: ':im_lib')
+    implementation project(path: ':permission')
 //    implementation rootProject.ext.dependencies.protobuf
 //    compileOnly rootProject.ext.dependencies.fastjson
     compileOnly files('libs/netty-tcp-4.1.33-1.0.jar')

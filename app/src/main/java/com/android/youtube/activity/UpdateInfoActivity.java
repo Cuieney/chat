@@ -10,8 +10,11 @@ import android.widget.Toast;
 import com.android.youtube.App;
 import com.android.youtube.R;
 import com.android.youtube.entity.User;
+import com.android.youtube.utils.DBUtils;
 import com.android.youtube.utils.NetworkUtils;
 
+
+import org.greenrobot.greendao.DbUtils;
 
 import io.reactivex.functions.Consumer;
 import pb.UserExtOuterClass;
@@ -56,6 +59,7 @@ public class UpdateInfoActivity extends BaseActivity {
                                 Toast.makeText(UpdateInfoActivity.this, "更新成功", Toast.LENGTH_SHORT).show();
                                 user.setUserName(name);
                                 App.user = user;
+                                DBUtils.getInstance().insertUser(App.user);
                                 finish();
                             }
                         }, new Consumer<Throwable>() {

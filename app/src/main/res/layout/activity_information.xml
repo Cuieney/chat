@@ -72,10 +72,12 @@
                 android:id="@+id/headImg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
+                android:scaleType="centerCrop"
+
                 android:layout_toLeftOf="@id/right_icon"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/applogo" />
+                android:src="@drawable/head" />
 
 
             <View

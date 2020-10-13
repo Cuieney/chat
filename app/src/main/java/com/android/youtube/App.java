@@ -27,6 +27,8 @@ public class App extends Application {
         Log.i("oye", "init: "+userList.size());
         if (userList.size() > 0) {
             user = userList.get(0);
+            Log.i("oye", "init: "+user.getUserImage());
+
         }
         ImageLoader.getInstance().init(this);
     }

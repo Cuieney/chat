@@ -56,7 +56,7 @@ public class DBUtils {
 
     public void insertUser(User user) {
         UserDao userDao = daoSession.getUserDao();
-        userDao.insert(user);
+        userDao.insertOrReplace(user);
     }
 
 
@@ -85,6 +85,9 @@ public class DBUtils {
         List<Message> list = new ArrayList<Message>();
         try {
             List<Friend> friends = daoSession.loadAll(Friend.class);
+            Friend me = new Friend();
+            me.setUser_id((long) App.user.getUserId());
+            friends.add(me);
             MessageDao messageDao = daoSession.getMessageDao();
             for (Friend friend : friends) {
                 long user_id = friend.getUser_id();

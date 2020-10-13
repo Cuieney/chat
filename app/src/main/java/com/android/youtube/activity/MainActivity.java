@@ -37,6 +37,8 @@ import com.android.youtube.utils.DBUtils;
 import com.flyco.tablayout.CommonTabLayout;
 import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
+import com.yanzhenjie.permission.AndPermission;
+import com.yanzhenjie.permission.runtime.Permission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,6 +145,19 @@ public class MainActivity extends AppCompatActivity implements YouTubeVideoView.
         content = (FrameLayout) findViewById(R.id.content);
 
         mYouTubeVideoView.setCallback(this);
+
+        AndPermission.with(this)
+                .runtime()
+                .permission(Permission.Group.STORAGE)
+                .onGranted(permissions -> {
+                    // Storage permission are allowed.
+                    Toast.makeText(this, "权限授予成功", Toast.LENGTH_SHORT).show();
+                })
+                .onDenied(permissions -> {
+                    // Storage permission are not allowed.
+                    Toast.makeText(this, "权限授予失败", Toast.LENGTH_SHORT).show();
+                })
+                .start();
     }
 
 

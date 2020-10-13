@@ -68,7 +68,7 @@ public class MeFragment  extends Fragment {
         User user = App.user;
         wechatId.setText("微信号："+user.getUserId()+" 设备号："+user.getDeviceId());
         name.setText(user.getUserName());
-        ImageLoader.getInstance().load(user.getUserImage()).into(head);
+        ImageLoader.getInstance().load(user.getUserImage()).placeholder(R.drawable.head).into(head);
         userInfoContainer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

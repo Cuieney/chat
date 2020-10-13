@@ -1,1 +1,1 @@
-include ':app', ':im_lib'
+include ':app', ':im_lib', ':permission'

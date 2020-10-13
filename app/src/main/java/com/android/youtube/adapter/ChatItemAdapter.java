@@ -48,7 +48,7 @@ public class ChatItemAdapter extends BaseRecycerViewAdapter<Message, ChatItemAda
         holder.time.setText(dateToStamp(list.get(position).getSend_time()));
         int itemViewType = getItemViewType(position);
         if(itemViewType == R.layout.item_chat_right){
-            ImageLoader.getInstance().load(App.user.getUserImage()).into(holder.head_img);
+            ImageLoader.getInstance().load(App.user.getUserImage()).placeholder(R.drawable.head).centerCrop().into(holder.head_img);
 
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
